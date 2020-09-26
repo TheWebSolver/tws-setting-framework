@@ -2,12 +2,9 @@
 /**
  * Setting Framework Field API
  * 
- * @version     2.1
- * @since       2.0
- * 
- * @package     hzfex
- * @subpackage  function
- * @category    API
+ * @package tws-core
+ * @subpackage framework
+ * @category wordpress-setting-api
  * 
  * --------------------------------
  * DEVELOPED AND CUSTOMIZED BY
