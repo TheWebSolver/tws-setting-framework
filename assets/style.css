@@ -1,0 +1,144 @@
+/* define vars */
+:root {
+    --primary: #009688;
+    --secondary: #d50000;
+    --secondary-focus: #b71c1c;
+    --white: #fff;
+    --dark-grey: #546e7a;
+    --gutter-offset: 16px;
+}
+
+/* debug output */
+.hzfex_debug_out {
+    color: #808080;
+    font-size: 0.8em;
+    font-style: italic;
+    padding: 10px;
+    background: #eee;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+.hzfex_debug_out h3 {
+    color: var(--white);
+    background-color: var(--secondary-shadow);
+    text-align: center;
+    padding: 5px 10px;
+    margin: 0 0 10px;
+    border-radius: 5px;
+}
+.hzfex_debug_out b {
+    font-size: 1.1em;
+}
+
+/* general styling */
+.hz_flx {
+    display: flex;
+    flex-flow: row nowrap;
+}
+.hz_flx .hz_flx_content {
+    flex-basis: 100%;
+}
+.hz_lrg_content, .hz_mdm_content.hz_content_first, .hz_sml_content.hz_content_first {
+    margin-bottom: calc(var(--gutter-offset) + var(--gutter-offset));
+}
+.hz_lrg_content {
+    flex: auto;
+}
+
+/* settings pages */
+#hzfex_setting_framework {
+    margin: 50px auto 0;
+    flex-direction: column;
+    padding-left: 5px;
+    padding-right: 15px;
+}
+.hz_min_container {
+    max-width: 1230px;
+    margin: 15px auto;
+}
+
+/* settings page head */
+.hz_setting_nav_head {
+    text-align: center;
+    background: var(--primary);
+    padding: var(--gutter-offset);
+    border-radius: 5px;
+}
+.hz_setting_nav_head h1 {
+    color: var(--white);
+}
+
+/* settings pages nav links */
+.hz_setting_page_nav {
+    color: var(--primary);
+    background: var(--white);
+    font-weight: 700;
+    margin: 10px 0;
+    margin-bottom: 10px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    position: relative;
+}
+.hz_setting_page_nav.list {
+    padding: var(--gutter-offset);
+    box-shadow: none !important;
+}
+
+/* settings page sections nav */
+.hz_setting_nav {
+    margin-bottom: 10px;
+    background: var(--white);
+}
+.hz_setting_nav a {
+    color: var(--dark-grey);
+    border-bottom-color: var(--dark-grey);
+    float: none;
+    background: transparent;
+    border: none;
+    padding: 10px 20px 5px;
+    display: inline-block;
+    margin: 0 var(--gutter) 0 0;
+    transition-duration: unset;
+}
+.hz_setting_nav a.nav-tab-active {
+    border-bottom: 3px solid;
+}
+.hz_setting_nav a.nav-tab-active, .hz_setting_nav a.nav-tab-active:focus {
+    border-bottom-color: var(--secondary-focus);
+}
+.hz_setting_nav a.nav-tab-active {
+    color: var(--secondary);
+}
+
+/* settings page sections contents */
+#hz_setting_section {
+    padding: 0;
+    margin: 0;
+}
+#hz_setting_section .nav-tab-wrapper {
+    padding-top: 0;
+}
+.nav-tab-wrapper, .wrap h2.nav-tab-wrapper, h1.nav-tab-wrapper {
+    border-bottom: none;
+}
+#hz_setting_section .metabox-holder {
+    background: var(--white);
+    padding: 20px;
+}
+
+@media( min-width: 40rem ) {
+    .hz_content_first {
+        padding-right: 20px;
+    }
+    .hz_min_container {
+        padding: 0 15px;
+    }
+    #hzfex_setting_framework {
+        flex-direction: row;
+        padding-left: 0;
+    }
+    #hz_setting_navigation {
+        width: 225px;
+    }
+}
+
