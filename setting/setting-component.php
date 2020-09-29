@@ -53,11 +53,9 @@ class Setting_Component {
      * 
      * @since 1.0
      * 
-     * @static
-     * 
      * @access private
      */
-    private static $menu_slug = 'options-general.php';
+    private $menu_slug = 'options-general.php';
 
     /**
      * Child-class submenu pages
@@ -274,7 +272,7 @@ class Setting_Component {
                 $menu_title = isset( $page['menu_title'] ) && ! empty( $page['menu_title'] ) ? $page['menu_title'] : $page_title;
                 $cap        = isset( $page['cap'] ) && ! empty( $page['cap'] ) ? $page['cap'] : $this->default_cap;
                 $priority   = isset( $page['priority'] ) ? $page['priority'] : null;
-                $icon       = isset( $page['icon'] ) && ! empty( $page['icon'] ) ? $page['icon'] : HZFEX_Core_Url . 'assets/graphics/gear-icon.svg'; //TODO: change url for icon on framework
+                $icon       = isset( $page['icon'] ) && ! empty( $page['icon'] ) ? $page['icon'] : HZFEX_Setting_Framework_Url . 'assets/graphics/gear-icon.svg';
 
                 /**
                  * WPHOOK: Filter -> change all capabilities at once.
@@ -427,13 +425,9 @@ class Setting_Component {
         wp_enqueue_style( 'wp-color-picker' );
         wp_enqueue_media();
         wp_enqueue_script( 'jquery' );
-
-        // load necessary style and script
-        wp_enqueue_style( 'hzfex_style' );
-        wp_enqueue_script( 'hzfex_script' );
-
-        // support WP admin color scheme
-        add_filter( 'admin_body_class', [ $this, 'has_color_scheme_support' ] );
+        
+        // enqueue setting page stylesheet.
+        wp_enqueue_style( 'hzfex_setting_page_style' );
 
         /**
          * WPHOOK: Action -> After loading of each submenu page
@@ -552,7 +546,7 @@ class Setting_Component {
         // bail early if no submenu pages set.
         if( sizeof( $nav ) === 0 ) return false;
 
-        $head_image = HZFEX_Core_Url . '/assets/graphics/setting-head.svg'; // TODO: change in framework
+        $head_image = HZFEX_Setting_Framework_Url . '/assets/graphics/setting-head.svg';
 
         $user       = wp_get_current_user();
         $screen_id  = get_current_screen()->id;
@@ -639,7 +633,7 @@ class Setting_Component {
                                 echo esc_attr( $title );
                             ?>
                             </h1>
-                            <small>v.<?= HZFEX_Core_Version; // TODO: change in framework ?></small>
+                            <small>v.<?= HZFEX_Setting_Framework_Version; ?></small>
                         <?php if( function_exists( 'tws_core' ) ) : ?> </a> <?php endif; ?>
                     </div>
 
@@ -898,21 +892,6 @@ class Setting_Component {
     protected function sections() {
         $die    = '<div class="hz_die_msg"><b><em>Method <code>\TheWebSolver\Plugin\Core\Setting_Component::sections()</code></em></b> must be overridden in a child-class to set sections and fields.';
         die( $die );
-    }
-
-    /**
-     * WordPress Color Scheme support.
-     * 
-     * TODO: remove in framework
-     * 
-     * @return string adds class to body tag in admin
-     * 
-     * @since 1.0
-     * 
-     * @access public
-     */ 
-    public function has_color_scheme_support() {
-        return 'hzfex_color_scheme_support';
     }
 
     /**
