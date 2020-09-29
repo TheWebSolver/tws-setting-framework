@@ -41,7 +41,7 @@
 // exit if file is accessed directly
 if( ! defined( 'ABSPATH' ) ) exit;
 
-// defines WordPress Settings API Framework fields debug mode.
+// defines this Framework plugin debug mode.
 define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', false );
 
 // define plugin url
