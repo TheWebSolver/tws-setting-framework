@@ -41,6 +41,23 @@
 // exit if file is accessed directly
 if( ! defined( 'ABSPATH' ) ) exit;
 
+// defines WordPress Settings API Framework fields debug mode.
+define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', false );
+
+// define plugin url
+if( ! defined ( 'HZFEX_Setting_Framework_Url' ) ) define( 'HZFEX_Setting_Framework_Url', plugin_dir_url( __FILE__ ) );
+
+// define plugin version
+if( ! defined( 'HZFEX_Setting_Framework_Version' ) ) define( 'HZFEX_Setting_Framework_Version', '1.0' );
+
 // require files.
 require_once 'setting/setting-api.php';
 require_once 'setting/setting-component.php';
+
+// example/test files
+include_once 'templates/with-fields.php';
+
+add_action( 'after_setup_theme', 'scripts' );
+function scripts() {
+   wp_register_style( 'hzfex_setting_page_style', plugin_dir_url( __FILE__ ) . 'assets/style.css', HZFEX_Setting_Framework_Version );
+}
