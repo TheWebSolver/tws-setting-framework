@@ -42,10 +42,10 @@ function text_field( $field, $value, $desc ) {
      * 
      * @example usage: Set to true on main plugin file.
      * 
-     * define( 'HZFEX_DEBUG_SETTING_FIELDS', true );
+     * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
-    if( defined( 'HZFEX_DEBUG_SETTING_FIELDS' ) && HZFEX_DEBUG_SETTING_FIELDS ) {
-        echo '<pre>', htmlspecialchars( print_r( $field, true ) ), '</pre>';
+    if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
+        echo '<div class="hzfex_debug_out"><h3>Setting Field Debug Output</h3><b>Field Data:</b><pre>', htmlspecialchars( print_r( $field, true ) ), '</pre><br><b>Field Value:</b><pre>', htmlspecialchars( print_r( $value, true ) ), '</pre></div>';
     }
 
     $size           = isset( $field['size'] ) && ! empty( $field['size'] ) ? $field['size'] : 'regular';
@@ -86,10 +86,10 @@ function number_field( $field, $value, $desc ) {
      * 
      * @example usage: Set to true on main plugin file.
      * 
-     * define( 'HZFEX_DEBUG_SETTING_FIELDS', true );
+     * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
-    if( defined( 'HZFEX_DEBUG_SETTING_FIELDS' ) && HZFEX_DEBUG_SETTING_FIELDS ) {
-        echo '<pre>', htmlspecialchars( print_r( $field, true ) ), '</pre>';
+    if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
+        echo '<div class="hzfex_debug_out"><h3>Setting Field Debug Output</h3><b>Field Data:</b><pre>', htmlspecialchars( print_r( $field, true ) ), '</pre><br><b>Field Value:</b><pre>', htmlspecialchars( print_r( $value, true ) ), '</pre></div>';
     }
 
     $size        = isset( $field['size'] ) && ! empty( $field['size'] ) ? $field['size'] : 'regular';
@@ -131,10 +131,10 @@ function checkbox_field( $field, $value, $desc ) {
      * 
      * @example usage: Set to true on main plugin file.
      * 
-     * define( 'HZFEX_DEBUG_SETTING_FIELDS', true );
+     * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
-    if( defined( 'HZFEX_DEBUG_SETTING_FIELDS' ) && HZFEX_DEBUG_SETTING_FIELDS && HZFEX_DEBUG_SETTING_FIELDS ) {
-        echo '<pre>', htmlspecialchars( print_r( $field, true ) ), '</pre>';
+    if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
+        echo '<div class="hzfex_debug_out"><h3>Setting Field Debug Output</h3><b>Field Data:</b><pre>', htmlspecialchars( print_r( $field, true ) ), '</pre><br><b>Field Value:</b><pre>', htmlspecialchars( print_r( $value, true ) ), '</pre></div>';
     }
 
     $html  = '<fieldset>';
@@ -178,10 +178,10 @@ function multi_checkbox_field( $field, $value, $desc ) {
      * 
      * @example usage: Set to true on main plugin file.
      * 
-     * define( 'HZFEX_DEBUG_SETTING_FIELDS', true );
+     * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
-    if( defined( 'HZFEX_DEBUG_SETTING_FIELDS' ) && HZFEX_DEBUG_SETTING_FIELDS ) {
-        echo '<pre>', htmlspecialchars( print_r( $field, true ) ), '</pre>';
+    if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
+        echo '<div class="hzfex_debug_out"><h3>Setting Field Debug Output</h3><b>Field Data:</b><pre>', htmlspecialchars( print_r( $field, true ) ), '</pre><br><b>Field Value:</b><pre>', htmlspecialchars( print_r( $value, true ) ), '</pre></div>';
     }
 
     $html       = '<fieldset>';
@@ -236,10 +236,10 @@ function radio_field( $field, $value, $desc ) {
      * 
      * @example usage: Set to true on main plugin file.
      * 
-     * define( 'HZFEX_DEBUG_SETTING_FIELDS', true );
+     * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
-    if( defined( 'HZFEX_DEBUG_SETTING_FIELDS' ) && HZFEX_DEBUG_SETTING_FIELDS ) {
-        echo '<pre>', htmlspecialchars( print_r( $field, true ) ), '</pre>';
+    if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
+        echo '<div class="hzfex_debug_out"><h3>Setting Field Debug Output</h3><b>Field Data:</b><pre>', htmlspecialchars( print_r( $field, true ) ), '</pre><br><b>Field Value:</b><pre>', htmlspecialchars( print_r( $value, true ) ), '</pre></div>';
     }
 
     $html  = '<fieldset><ul>';
@@ -291,10 +291,10 @@ function select_field( $field, $value, $desc ) {
      * 
      * @example usage: Set to true on main plugin file.
      * 
-     * define( 'HZFEX_DEBUG_SETTING_FIELDS', true );
+     * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
-    if( defined( 'HZFEX_DEBUG_SETTING_FIELDS' ) && HZFEX_DEBUG_SETTING_FIELDS ) {
-        echo '<pre>', htmlspecialchars( print_r( $field, true ) ), '</pre>';
+    if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
+        echo '<div class="hzfex_debug_out"><h3>Setting Field Debug Output</h3><b>Field Data:</b><pre>', htmlspecialchars( print_r( $field, true ) ), '</pre><br><b>Field Value:</b><pre>', htmlspecialchars( print_r( $value, true ) ), '</pre></div>';
     }
 
     $size  = isset( $field['size'] ) && ! empty( $field['size'] ) ? $field['size'] : 'regular';
@@ -340,10 +340,10 @@ function multi_select_field( $field, $value, $desc ) {
      * 
      * @example usage: Set to true on main plugin file.
      * 
-     * define( 'HZFEX_DEBUG_SETTING_FIELDS', true );
+     * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
-    if( defined( 'HZFEX_DEBUG_SETTING_FIELDS' ) && HZFEX_DEBUG_SETTING_FIELDS ) {
-        echo '<pre>', htmlspecialchars( print_r( $field, true ) ), '</pre>';
+    if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
+        echo '<div class="hzfex_debug_out"><h3>Setting Field Debug Output</h3><b>Field Data:</b><pre>', htmlspecialchars( print_r( $field, true ) ), '</pre><br><b>Field Value:</b><pre>', htmlspecialchars( print_r( $value, true ) ), '</pre></div>';
     }
 
     $id         = $field['section'] . '['.$field['id'].']';
@@ -389,10 +389,10 @@ function textarea_field( $field, $value, $desc ) {
      * 
      * @example usage: Set to true on main plugin file.
      * 
-     * define( 'HZFEX_DEBUG_SETTING_FIELDS', true );
+     * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
-    if( defined( 'HZFEX_DEBUG_SETTING_FIELDS' ) && HZFEX_DEBUG_SETTING_FIELDS ) {
-        echo '<pre>', htmlspecialchars( print_r( $field, true ) ), '</pre>';
+    if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
+        echo '<div class="hzfex_debug_out"><h3>Setting Field Debug Output</h3><b>Field Data:</b><pre>', htmlspecialchars( print_r( $field, true ) ), '</pre><br><b>Field Value:</b><pre>', htmlspecialchars( print_r( $value, true ) ), '</pre></div>';
     }
 
     $size        = isset( $field['size'] ) && ! empty( $field['size'] ) ? $field['size'] : 'regular';
@@ -429,10 +429,10 @@ function wysiwyg_field( $field, $value, $desc ) {
      * 
      * @example usage: Set to true on main plugin file.
      * 
-     * define( 'HZFEX_DEBUG_SETTING_FIELDS', true );
+     * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
-    if( defined( 'HZFEX_DEBUG_SETTING_FIELDS' ) && HZFEX_DEBUG_SETTING_FIELDS ) {
-        echo '<pre>', htmlspecialchars( print_r( $field, true ) ), '</pre>';
+    if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
+        echo '<div class="hzfex_debug_out"><h3>Setting Field Debug Output</h3><b>Field Data:</b><pre>', htmlspecialchars( print_r( $field, true ) ), '</pre><br><b>Field Value:</b><pre>', htmlspecialchars( print_r( $value, true ) ), '</pre></div>';
     }
 
     $size  = isset( $field['size'] ) && ! empty( $field['size'] ) ? $field['size'] : '500px';
@@ -474,10 +474,10 @@ function file_field( $field, $value, $desc ) {
      * 
      * @example usage: Set to true on main plugin file.
      * 
-     * define( 'HZFEX_DEBUG_SETTING_FIELDS', true );
+     * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
-    if( defined( 'HZFEX_DEBUG_SETTING_FIELDS' ) && HZFEX_DEBUG_SETTING_FIELDS ) {
-        echo '<pre>', htmlspecialchars( print_r( $field, true ) ), '</pre>';
+    if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
+        echo '<div class="hzfex_debug_out"><h3>Setting Field Debug Output</h3><b>Field Data:</b><pre>', htmlspecialchars( print_r( $field, true ) ), '</pre><br><b>Field Value:</b><pre>', htmlspecialchars( print_r( $value, true ) ), '</pre></div>';
     }
 
     $size  = isset( $field['size'] ) && ! empty( $field['size'] ) ? $field['size'] : 'regular';
@@ -515,10 +515,10 @@ function color_field( $field, $value, $desc ) {
      * 
      * @example usage: Set to true on main plugin file.
      * 
-     * define( 'HZFEX_DEBUG_SETTING_FIELDS', true );
+     * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
-    if( defined( 'HZFEX_DEBUG_SETTING_FIELDS' ) && HZFEX_DEBUG_SETTING_FIELDS ) {
-        echo '<pre>', htmlspecialchars( print_r( $field, true ) ), '</pre>';
+    if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
+        echo '<div class="hzfex_debug_out"><h3>Setting Field Debug Output</h3><b>Field Data:</b><pre>', htmlspecialchars( print_r( $field, true ) ), '</pre><br><b>Field Value:</b><pre>', htmlspecialchars( print_r( $value, true ) ), '</pre></div>';
     }
 
     $size  = isset( $field['size'] ) && ! empty( $field['size'] ) ? $field['size'] : 'regular';
@@ -554,10 +554,10 @@ function password_field( $field, $value, $desc ) {
      * 
      * @example usage: Set to true on main plugin file.
      * 
-     * define( 'HZFEX_DEBUG_SETTING_FIELDS', true );
+     * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
-    if( defined( 'HZFEX_DEBUG_SETTING_FIELDS' ) && HZFEX_DEBUG_SETTING_FIELDS ) {
-        echo '<pre>', htmlspecialchars( print_r( $field, true ) ), '</pre>';
+    if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
+        echo '<div class="hzfex_debug_out"><h3>Setting Field Debug Output</h3><b>Field Data:</b><pre>', htmlspecialchars( print_r( $field, true ) ), '</pre><br><b>Field Value:</b><pre>', htmlspecialchars( print_r( $value, true ) ), '</pre></div>';
     }
 
     $size  = isset( $field['size'] ) && ! empty( $field['size'] ) ? $field['size'] : 'regular';
@@ -592,10 +592,10 @@ function pages_field( $field, $value, $desc ) {
      * 
      * @example usage: Set to true on main plugin file.
      * 
-     * define( 'HZFEX_DEBUG_SETTING_FIELDS', true );
+     * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
-    if( defined( 'HZFEX_DEBUG_SETTING_FIELDS' ) && HZFEX_DEBUG_SETTING_FIELDS ) {
-        echo '<pre>', htmlspecialchars( print_r( $field, true ) ), '</pre>';
+    if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
+        echo '<div class="hzfex_debug_out"><h3>Setting Field Debug Output</h3><b>Field Data:</b><pre>', htmlspecialchars( print_r( $field, true ) ), '</pre><br><b>Field Value:</b><pre>', htmlspecialchars( print_r( $value, true ) ), '</pre></div>';
     }
 
     $dropdown_args = [
@@ -626,10 +626,10 @@ function categories_field( $field, $value, $desc ) {
      * 
      * @example usage: Set to true on main plugin file.
      * 
-     * define( 'HZFEX_DEBUG_SETTING_FIELDS', true );
+     * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
-    if( defined( 'HZFEX_DEBUG_SETTING_FIELDS' ) && HZFEX_DEBUG_SETTING_FIELDS ) {
-        echo '<pre>', htmlspecialchars( print_r( $field, true ) ), '</pre>';
+    if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
+        echo '<div class="hzfex_debug_out"><h3>Setting Field Debug Output</h3><b>Field Data:</b><pre>', htmlspecialchars( print_r( $field, true ) ), '</pre><br><b>Field Value:</b><pre>', htmlspecialchars( print_r( $value, true ) ), '</pre></div>';
     }
 
     $dropdown_args = [
@@ -640,5 +640,4 @@ function categories_field( $field, $value, $desc ) {
     ];
     $html = wp_dropdown_categories( $dropdown_args );
     echo $html;
-
 }
