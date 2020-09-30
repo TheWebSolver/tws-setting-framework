@@ -6,6 +6,10 @@
  * @subpackage framework
  * @category wordpress-setting-api
  * 
+ * Based on tareq1988
+ * @author Tareq Hasan <tareq@weDevs.com>
+ * @filesource https://github.com/tareq1988/wordpress-settings-api-class/blob/master/src/class.settings-api.php
+ * 
  * -----------------------------------
  * DEVELOPED-MAINTAINED-SUPPPORTED BY
  * -----------------------------------
@@ -128,19 +132,23 @@ final class Settings_API {
 			add_settings_section( $section['id'], $section['title'], $callback, $section['id'] );
 		}
 
-		// Registers settings fields
-		foreach ( $this->fields as $section => $field ) {
+		// add setting fields only if fields are set in section.
+		if( $this->fields && is_array( $this->fields ) && sizeof( $this->fields ) > 0 ) {
+			
+			// Registers settings fields
+			foreach ( $this->fields as $section => $field ) {
 
-			foreach ( $field as $id => $option ) {
+				foreach ( $field as $id => $option ) {
 
-				// Sets callback function to display field HTML structure.
-				$callback   = isset( $option['callback'] ) ? $option['callback'] : [ __CLASS__, 'field_callback' ];
+					// Sets callback function to display field HTML structure.
+					$callback   = isset( $option['callback'] ) ? $option['callback'] : [ __CLASS__, 'field_callback' ];
 
-				// Gets field data args
-				$args = $this->field_data( $section, $id, $option );
+					// Gets field data args
+					$args = $this->field_data( $section, $id, $option );
 
-				// Adds new fields to each sections
-				add_settings_field( "{$section}[{$id}]", $args['name'], $callback, $section, $section, $args );
+					// Adds new fields to each sections
+					add_settings_field( "{$section}[{$id}]", $args['name'], $callback, $section, $section, $args );
+				}
 			}
 		}
 
@@ -172,8 +180,6 @@ final class Settings_API {
 
 				echo str_replace( '"', '\"', $section['desc'] );
 			};
-		} else if( isset( $section['callback'] ) ) {
-			$callback = $section['callback'];
 		} else {
 			$callback = null;
 		}
@@ -183,14 +189,16 @@ final class Settings_API {
 
 	/**
 	 * Sets field data
-	 *
+	 * 	 *
 	 * @param array $section section data
 	 * @param string $id field ID
-	 * @param array $option field options
+	 * @param array $option field data
 	 * 
 	 * @return array
 	 * 
 	 * @since 1.0
+	 * 
+	 * @internal TODO: breakdown field args accordingly to field type
 	 * 
 	 * @access private
 	 */
@@ -266,7 +274,7 @@ final class Settings_API {
 
 			case 'multi_select' :
 				
-				// only enqueue select2 on pages with select field.
+				// only enqueue select2 on pages with multi-select field.
 				wp_enqueue_script( 'hzfex_select2' );
 				wp_enqueue_style( 'hzfex_select2_style' );
 				multi_select_field( $field, $value, $desc ); break;
@@ -422,7 +430,7 @@ final class Settings_API {
 	/**
 	 * Show the section settings forms
 	 *
-	 * Display each section and it's form fields in separate tab
+	 * Display each section as forms with its fields as tab
 	 * 
 	 * @since 1.0
 	 * 
@@ -431,31 +439,34 @@ final class Settings_API {
 	public function show_forms() {
 
 		echo '<div class="metabox-holder">';
-			foreach ( $this->sections as $form ) {
 
-				echo '<div id="'.$form['id'].'" class="group" style="display: none;">
-					<form method="post" action="options.php">';
+			// loops through all sections and output content accordingly. 
+			foreach ( $this->sections as $section ) {
 
-					// WPHOOK Action - for adding content before form fields
-					do_action( 'hzfex_before_' . $form['id'] . '_field', $form );
+				echo '<div id="'.$section['id'].'" class="group" style="display: none;">';
 
-					// WordPress API to set setting fields
-					settings_fields( $form['id'] );
+				/**
+				 * DEBUG: Section Field args.
+				 * 
+				 * @example usage: Set to true on main plugin file.
+				 * 
+				 * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
+				 */
+				if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
+					echo '<div class="hzfex_debug_out"><h3>'.$section['title'].' Debug Output</h3><b>Section Data:</b><pre>', htmlspecialchars( print_r( $section, true ) ), '</pre></div>';
+				}
 
-					// WordPress API to set setting section
-					do_settings_sections( $form['id'] );
+				// // Gets section callback data. 
+				if( $section['callback'] && is_callable( $section['callback'] ) ) {
+					call_user_func( $section['callback'] );
+				}
 
-					// WPHOOK Aciton - for adding content after form fields
-					do_action( 'hzfex_after_' . $form['id'] . '_field', $form );
+				// Display form and it's fields if section fields are set.
+				if( $section['fields'] ) {
+					$this->show_fields( $section );
+				}
 
-					if( $this->has_input_field( $form['fields'] ) ) {
-						echo '<div class="hz_setting_submit">';
-							echo submit_button();
-						echo '</div>';
-					}
-
-					echo '</form>
-				</div>';
+				echo '</div>';
 			}
 		echo '</div>';
 
@@ -464,11 +475,49 @@ final class Settings_API {
 	}
 
 	/**
-	 * Section has valid input fields to show submit button
+	 * Creates form tags, sets setting sections and fields.
+	 * 
+	 * Main method that actually displays form and its data.
+	 *
+	 * @param array $form section and its data.
+	 * 
+	 * @return void
+	 * 
+	 * @since 1.0
+	 * 
+	 * @access private
+	 */
+	private function show_fields( $section ) {
+		echo '<form method="post" action="options.php">';
+
+		// WPHOOK Action -> content before form fields
+		do_action( "hzfex_before_{$section['id']}_fields", $section );
+
+		// WordPress API to set setting fields
+		settings_fields( $section['id'] );
+
+		// WordPress API to set setting section
+		do_settings_sections( $section['id'] );
+
+		// WPHOOK Aciton -> ontent after form fields
+		do_action( "hzfex_after_{$section['id']}_fields", $section );
+
+		// Quick check if unsupported fields are only set.
+		if( $this->has_input_field( $section['fields'] ) ) {
+			echo '<div class="hz_setting_submit">';
+				echo submit_button();
+			echo '</div>';
+		}
+
+		echo '</form>';
+	}
+
+	/**
+	 * Checks if section has valid input fields to show submit button
 	 *
 	 * @param array $fields all fields that belong to a section
 	 * 
-	 * @return bool
+	 * @return bool true if any one field type matches, else false
 	 * 
 	 * @since 1.0
 	 * 
@@ -476,17 +525,9 @@ final class Settings_API {
 	 */
 	private function has_input_field( $fields ) {
 
-		$types = [];
+		$fields = array_column( $fields, 'type' );
 
-		if( $fields ) {
-
-			foreach ( $fields as $key => $field ) {
-
-				if( isset( $field['type'] ) ) $types[]    = $field['type'];
-			}
-		}
-
-		return array_intersect( $this->field_types, $types ) ? true : false;
+		return array_intersect( $this->field_types, $fields ) ? true : false;
 	}
 
 	/**
