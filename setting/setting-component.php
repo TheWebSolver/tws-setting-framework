@@ -55,7 +55,7 @@ class Setting_Component {
      * 
      * @access private
      */
-    private $menu_slug = 'options-general.php';
+    private $menu_slug = HZFEX_SETTING_FRAMEWORK_MENU;
 
     /**
      * Child-class submenu pages
@@ -372,7 +372,7 @@ class Setting_Component {
                 /**
                  * WPHOOK: Action -> after successfull loading of submenu page
                  */
-                do_action( 'hzfex_setting_framework_loaded' );
+                do_action( 'hzfex_setting_framework_loaded', $class, $page );
             }
         }
     }
@@ -473,10 +473,10 @@ class Setting_Component {
                  * @example - usage:
                  * 
                  * Shows nav even if only have one section.
-                 * add_filter( 'hzfex_show_setting_sections_nav_if_single', '__return_true' );
+                 * add_filter( 'hzfex_show_setting_section_tabs_if_single', '__return_true' );
                  * 
                  */
-                $show_nav = apply_filters( 'hzfex_show_setting_sections_nav_if_single', false );
+                $show_nav = apply_filters( 'hzfex_show_setting_section_tabs_if_single', false );
                 
                 // Sets no of sections to be defined to show navigation.
                 $section_count = $show_nav ? 0 : 1;
@@ -621,14 +621,14 @@ class Setting_Component {
                                  * 
                                  * @example usage:
                                  * 
-                                 * add_filter( 'hzfex_set_setting_head_title', 'header_title' );
+                                 * add_filter( 'hzfex_set_setting_page_head_title', 'header_title' );
                                  * function header_title( $title ) {
                                  *      $title = __( 'My Setting Framework', 'tws-core' );
                                  * 
                                  *      return $title;
                                  * }
                                  */
-                                $title = apply_filters( 'hzfex_set_setting_head_title', __( 'Setting', 'tws-core' ) );
+                                $title = apply_filters( 'hzfex_set_setting_page_head_title', __( 'TWS Setting Framework', 'tws-core' ) );
 
                                 echo esc_attr( $title );
                             ?>
@@ -654,7 +654,7 @@ class Setting_Component {
 
                     foreach( $nav as $option ) {
 
-                        $icon       = function_exists( 'hz_get_svg_icon' ) ? hz_get_svg_icon( $option['icon'] ) : '<img src="' .$option['icon']. '">'; // TODO add image for this in framework.
+                        $icon       = function_exists( 'hz_get_svg_icon' ) ? hz_get_svg_icon( $option['icon'] ) : '<img src="' .$option['icon']. '">';
                         $current    = strpos( $screen_id, $option['slug'] ) !== false ? ' current' : '';
                         
                         // Quick check if user has assigned capability before showing nav link
@@ -815,12 +815,12 @@ class Setting_Component {
                  * NOTE: Plugin specific feature
                  * - This feature is only available in plugin and not in this framework.
                  * 
-                 * @link TODO: add github/wordpress plugin link here.
+                 * @link coming soon!!!
                  * 
-                 * @uses    hzfex_sort_by_priority() Sorts array data by priority
+                 * @uses    sort_by_priority() Sorts array data by priority
                  */
-                if( function_exists( '\TheWebSolver\Plugin\Core\hzfex_sort_by_priority' ) ) {
-                    uasort( $fields[$section_id], '\TheWebSolver\Plugin\Core\hzfex_sort_by_priority' );
+                if( function_exists( '\TheWebSolver\Plugin\Core\sort_by_priority' ) ) {
+                    uasort( $fields[$section_id], '\TheWebSolver\Plugin\Core\sort_by_priority' );
                 }
 
             }
