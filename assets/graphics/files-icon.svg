@@ -1,0 +1,14 @@
+<svg class="svg_files"
+    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84.47 103.8">
+    <defs>
+        <style>
+            .stroke_prim{stroke:#fff; fill:#00796a;}
+        </style>
+    </defs>
+    <path class="hz_ico_c1 stroke_prim" d="M50.1,14.9H27.3c-11.6,0-21.1,7.6-21.1,15.2"/>
+    <line class="hz_ico_c1 stroke_prim" x1="79" y1="45.9" x2="79" y2="23.2"/>
+    <path class="hz_ico_c1 stroke_prim" d="M60.6,2H37.8C26.2,2,16.7,8.7,16.7,17"/>
+    <path class="hz_ico_c1 stroke_prim" d="M62.7,24.8H18.3A16.3,16.3,0,0,0,2,41.1V85.5a16.3,16.3,0,0,0,16.3,16.3H62.7A16.3,16.3,0,0,0,79,85.5V41.1A16.3,16.3,0,0,0,62.7,24.8Z"/>
+    <path class="hz_ico_c2 fill_sec" d="M68.7,10.4a3.57,3.57,0,0,1,4.2,4.2,3.52,3.52,0,0,1-2.8,2.8,3.57,3.57,0,0,1-4.2-4.2A3.52,3.52,0,0,1,68.7,10.4Z"/>
+    <path class="hz_ico_c2 fill_sec" d="M79.2,1.6a3.57,3.57,0,0,1,4.2,4.2,3.52,3.52,0,0,1-2.8,2.8,3.57,3.57,0,0,1-4.2-4.2A3.65,3.65,0,0,1,79.2,1.6Z"/>
+</svg>
