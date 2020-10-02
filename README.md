@@ -2,12 +2,16 @@
 <!-- ***
 https://www.markdownguide.org/basic-syntax/#reference-style-links
  -->
-[![Contributors][contributors-shield]][contributors-url]
+<div style="text-align:center;">
+
+<!-- [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
+[![Issues][issues-shield]][issues-url] -->
 [![GPL License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
+
+</div>
 <!-- ***
 <!-- -->
 
