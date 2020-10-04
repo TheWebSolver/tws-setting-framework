@@ -9,14 +9,14 @@
  * -----------------------------------
  * DEVELOPED-MAINTAINED-SUPPPORTED BY
  * -----------------------------------
- * ███      ███╗   ████████████████
- * ███      ███║            ██████
- * ███      ███║       ╔══█████
- *  ████████████║      ╚█████
- * ███║     ███║     █████
- * ███║     ███║   █████
+ * ███║     ███╗   ████████████████
+ * ███║     ███║   ═════════██████╗
+ * ███║     ███║        ╔══█████═╝
+ *  ████████████║      ╚═█████
+ * ███║═════███║      █████╗
+ * ███║     ███║    █████═╝
  * ███║     ███║   ████████████████╗
- * ╚═╝      ╚═╝    ════════════════╝
+ * ╚═╝      ╚═╝    ═══════════════╝
  */
 
 namespace TheWebSolver\Plugin\Core\Framework;
@@ -421,21 +421,38 @@ class Setting_Component {
      */
     public function load_assets() {
 
-        // core style/script
-        wp_enqueue_style( 'wp-color-picker' );
-        wp_enqueue_media();
-        wp_enqueue_script( 'jquery' );
-        
-        // enqueue setting page stylesheet.
-        wp_enqueue_style( 'hzfex_setting_page_style' );
-
         /**
          * WPHOOK: Action -> After loading of each submenu page
          * 
          * This hook can only be accessed on pages created by child-class
          */
         do_action( 'hzfex_setting_framework_page_loaded' );
+
+        // enqueues styles and scripts.
+        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
         
+    }
+
+    /**
+     * Enqueues styles and scripts
+     *
+     * @return void
+     * 
+     * @since 1.0
+     * 
+     * @access public
+     */
+    public function enqueue_scripts() {
+
+        // core style/script
+        wp_enqueue_style( 'wp-color-picker' );
+        wp_enqueue_media();
+        wp_enqueue_script( 'wp-color-picker' );
+        wp_enqueue_script( 'jquery' );
+        
+        // enqueue setting page stylesheet.
+        wp_enqueue_style( 'hzfex_setting_page_style' );
+
     }
 
     /**
@@ -466,13 +483,13 @@ class Setting_Component {
                 if( ! is_array( $sections ) ) die( $this->section_die() );
 
                 /**
-                 * WPHOOK: Filter -> display section navigation if page has single section?
+                 * WPHOOK: Filter -> display section tabs if page has single section?
                  * 
-                 * Controls whether or not to show nav if page has only one section.
+                 * Controls whether or not to show section tabs if page has only one section.
                  * 
                  * @example - usage:
                  * 
-                 * Shows nav even if only have one section.
+                 * Shows tab even if only have one section.
                  * add_filter( 'hzfex_show_setting_section_tabs_if_single', '__return_true' );
                  * 
                  */
@@ -783,7 +800,7 @@ class Setting_Component {
                  * 
                  * NOTE: Use child-class instead
                  * - Highly recommended to add all fields from child-class {@method `sections()`}.
-                 * - Use this filter only to add new fields to already an existing section added by others.
+                 * - Use this filter only to add new fields to an already existing section added by others.
                  * 
                  * @param string $section_id -> the section key where field should be added.
                  * @param array $section_data['fields'] -> an array of fields that belong to that section.
