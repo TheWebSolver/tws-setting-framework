@@ -18,7 +18,7 @@ https://www.markdownguide.org/basic-syntax/#reference-style-links
 
 <!-- PROJECT LOGO -->
 <br />
-<p align="center">
+<p style="text-align:center">
   <a href="https://github.com/TheWebSolver/tws-setting-framework">
     <img src="images/official_logo.png" alt="Logo" width="80" height="80">
   </a>
