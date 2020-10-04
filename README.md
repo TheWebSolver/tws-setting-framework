@@ -61,7 +61,7 @@ https://www.markdownguide.org/basic-syntax/#reference-style-links
 ### Preface 
 <small>[Top↑](#table-of-contents)</small>
 
-This framework is a ready to use plugin or to include inside your own plugin/theme for anyone who needs to create: <br/>
+This framework is a ready to use plugin _<small>(if not building your own plugin or theme)_</small> or to include inside your own plugin/theme for anyone who needs to create: <br/>
 - WordPress Admin pages (**_Welcome | Fields Demo_** navigations at left side in screenshot 1 above)
 - Different Sections within a page (tabs **_Getting Started | Hooks & Filters | Recommended Setup | Ready to Go?_** inside **_Welcome_** page in screenshot 1 above)
 - Contents within each section (tab content of **_Getting Started_** inside **_Welcome_** page in screenshot 1 above)
@@ -78,17 +78,18 @@ This framework is a ready to use plugin or to include inside your own plugin/the
 
 This plugin is developed using:
 
-* [Code Editor - **Visual Studio Code (VS Code)**](https://code.visualstudio.com/download) - Loved by most developers for coding
+* [Code Editor - **Visual Studio Code (VS Code)**](https://code.visualstudio.com/download) - Loved by most developers for coding.
 * [VS Code extension - **WordPress Snippets**](https://github.com/jason-pomerleau/vscode-wordpress-toolbox) - Snippets for every WordPress function, class and constant.
-* [VS Code extension - **PHP Intelephense**](https://github.com/bmewburn/vscode-intelephense) - Essential features for productive PHP development
-* [VS Code extension - **Comment Anchors**](https://github.com/ExodiusStudios/vscode-comment-anchors) - Find anchors for WordPress **Action** & **Filter** hooks (and other anchors too) added in this framework's files
-* [VS Code Font - **Fira Code**](https://github.com/tonsky/FiraCode) - Download and install to your OS and then use from VS Code font family setting
+* [VS Code extension - **PHP Intelephense**](https://github.com/bmewburn/vscode-intelephense) - Essential features for productive PHP development.
+* [VS Code extension - **Comment Anchors**](https://github.com/ExodiusStudios/vscode-comment-anchors) - Find anchors for WordPress **Action** & **Filter** hooks (and other anchors too) added in this framework's files.
+* [VS Code Font - **Fira Code**](https://github.com/tonsky/FiraCode) - Free monospaced font with programming ligatures. Set it from VS Code font family.
 * [WordPress Plugin - **Show Hooks**](https://wordpress.org/plugins/show-hooks/) - See visual representation of WordPess action and filter hooks.
 
 ### Installation
 <small>[Top↑](#table-of-contents)</small>
 
 #### For using as plugin
+>change [with-fields.php](https://github.com/TheWebSolver/tws-setting-framework/tree/master/templates/with-fields.php) and [without-fields.php](https://github.com/TheWebSolver/tws-setting-framework/tree/master/templates/without-fields.php) to your requirement.
 
 - Download or clone this repo into plugins directory using:
     ```sh
@@ -99,9 +100,9 @@ This plugin is developed using:
     ```sh
     git clone https://github.com/TheWebSolver/tws-setting-framework.git
     ```
-- Include the framework file **_tws-setting-framework.php_** from your main plugin file
+- Include the framework file **_tws-setting-framework.php_** from your plugin/theme file
     ```sh
-    include_once 'path_to_framework_directory/tws-setting-framework.php';
+    require_once 'path_to_framework_directory/tws-setting-framework.php';
     ```
 
 ## Usage
@@ -123,7 +124,7 @@ This plugin is developed using:
 
 #### NOTE:
 
->Regarding documentation, once it is activated, navigate to **_Welcome_** submenu page which has four sections as tabs, first three of them are documentation tabs. Contents in these three tabs are added from files that are inside directory _[templates/contents](https://github.com/TheWebSolver/tws-setting-framework/tree/master/templates/contents)_.
+>Regarding documentation, once activated, navigate to **_Welcome_** submenu page which has four sections as tabs, first three of them are documentation tabs. Contents in these three tabs are added from files that are inside directory _[templates/contents](https://github.com/TheWebSolver/tws-setting-framework/tree/master/templates/contents)_.
 
 >_(See screenshot 1 above for reference on how content gets displayed)_
 
@@ -227,7 +228,7 @@ This plugin is developed using:
 
     >For refresher, the parent class is in file [setting-component.php](https://github.com/TheWebSolver/tws-setting-framework/tree/master/setting/setting-component.php).
 
-- >For visual presentation on how it works, see screenshot 3, 4, 5 and 6 below.
+- >For visual representation on how section and field gets displayed, see screenshot 3, 4 and 5 below.
 
 #### Screenshot 3 - General Fields
 ![Screenshot 3][screenshot-3]
@@ -259,7 +260,7 @@ This plugin is developed using:
 
 - For debugging purpose, you can define debug constant to `true`.
     
-    On file [tws-setting-framework.php](https://github.com/TheWebSolver/tws-setting-framework/tree/master/tws-setting-framework.php) at around **_line 32_**, change `false` to `true`.
+    On file [tws-setting-framework.php](https://github.com/TheWebSolver/tws-setting-framework/tree/master/tws-setting-framework.php) at around **_line 32_**, change contstant value from `false` to `true`.  For visual representation, see screenshot 6 below.
 
     ```php
     define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
@@ -303,6 +304,12 @@ Shesh Ghimire - [@hsehszroc](https://twitter.com/hsehszroc)
 
 Project Link: [https://github.com/TheWebSolver/tws-setting-framework](https://github.com/TheWebSolver/tws-setting-framework)
 
+<!-- ACKNOWLEDGEMENT -->
+## Acknowledegement
+<small>[Top↑](#table-of-contents)</small>
+
+- >This project uses base for Settings_API from [wordpress-settings-api-class](https://github.com/tareq1988/wordpress-settings-api-class).
+
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
@@ -324,9 +331,3 @@ Project Link: [https://github.com/TheWebSolver/tws-setting-framework](https://gi
 [screenshot-4]: images/advanced-fields.png
 [screenshot-5]: images/stylized-fields.png
 [screenshot-6]: images/debug.png
-
-<!-- ACKNOWLEDGEMENT -->
-## Acknowledegement
-<small>[Top↑](#table-of-contents)</small>
-
-- >This project uses base for Settings_API from [wordpress-settings-api-class](https://github.com/tareq1988/wordpress-settings-api-class).
