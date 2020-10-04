@@ -13,14 +13,14 @@
  * -----------------------------------
  * DEVELOPED-MAINTAINED-SUPPPORTED BY
  * -----------------------------------
- * ███      ███╗   ████████████████
- * ███      ███║            ██████
- * ███      ███║       ╔══█████
- *  ████████████║      ╚█████
- * ███║     ███║     █████
- * ███║     ███║   █████
+ * ███║     ███╗   ████████████████
+ * ███║     ███║   ═════════██████╗
+ * ███║     ███║        ╔══█████═╝
+ *  ████████████║      ╚═█████
+ * ███║═════███║      █████╗
+ * ███║     ███║    █████═╝
  * ███║     ███║   ████████████████╗
- * ╚═╝      ╚═╝    ════════════════╝
+ * ╚═╝      ╚═╝    ═══════════════╝
  */
 
 namespace TheWebSolver\Plugin\Core\Framework;
@@ -136,25 +136,32 @@ final class Settings_API {
 		if( $this->fields && is_array( $this->fields ) && sizeof( $this->fields ) > 0 ) {
 			
 			// Registers settings fields
-			foreach ( $this->fields as $section => $field ) {
+			foreach ( $this->fields as $section_id => $fields ) {
 
-				foreach ( $field as $id => $option ) {
+				foreach ( $fields as $field_id => $field_args ) {
 
-					// Sets callback function to display field HTML structure.
-					$callback   = isset( $option['callback'] ) ? $option['callback'] : [ __CLASS__, 'field_callback' ];
+					// Gets and sets field data args from $field_args
+					$args	= $this->field_data( $section_id, $field_id, $field_args );
+					$id		= "{$section_id}[{$field_id}]";
+					$callback   = isset( $field_args['callback'] ) ? $field_args['callback'] : [ __CLASS__, 'field_callback' ];
 
-					// Gets field data args
-					$args = $this->field_data( $section, $id, $option );
+					
 
 					// Adds new fields to each sections
-					add_settings_field( "{$section}[{$id}]", $args['name'], $callback, $section, $section, $args );
+					add_settings_field( "{$id}", $args['name'], $callback, $section_id, $section_id, $args );
 				}
 			}
 		}
 
 		// Registers settings
 		foreach ( $this->sections as $section ) {
-			register_setting( $section['id'], $section['id'], [ 'sanitize_callback', [ $this, 'sanitize_options' ] ] );
+			register_setting(
+				$section['id'],
+				$section['id'],
+				[
+					'sanitize_callback' => [ $this, 'sanitize_callback' ]
+				]
+			);
 		}
 	}
 	
@@ -198,36 +205,58 @@ final class Settings_API {
 	 * 
 	 * @since 1.0
 	 * 
-	 * @internal TODO: breakdown field args accordingly to field type
-	 * 
 	 * @access private
 	 */
-	private function field_data( $section, $id, $option ) {
+	private function field_data( $section_id, $field_id, $field_args ) {
 
-		$class = isset( $option['class'] ) ? $option['class'] : '';
-		if( isset( $option['label'] ) ) {
-			$label = $option['label'];
-		} else {
-			$label = 'hzfex_noLabel';
-		}
+		$class		= isset( $field_args['class'] ) && ! empty( $field_args['class'] ) ? ' ' .$field_args['class'] : '';
+		$label		= isset( $field_args['label'] ) && ! empty( $field_args['label'] ) ? $field_args['label'] : $field_args['type'] . ' field';
 
 		$args = [
-			'id'                => $id,
-			'class'             => $id . ' ' . $class . ' ' .$label,
-			'label_for'         => "{$section}[{$id}]",
-			'desc'              => isset( $option['desc'] ) && ! empty( $option['desc']  ) ? $option['desc'] : '',
+			'id'                => $field_id,
+			'class'             => $field_id . '' . $class,
+			'label_for'         => "{$section_id}[{$field_id}]",
+			'desc'              => isset( $field_args['desc'] ) && ! empty( $field_args['desc']  ) ? $field_args['desc'] : '',
 			'name'              => $label,
-			'section'           => $section,
-			'size'              => isset( $option['size'] ) && ! empty( $option['size']  ) ? $option['size'] : null,
-			'options'           => isset( $option['options'] ) && ! empty( $option['options']  ) ? $option['options'] : '',
-			'default'           => isset( $option['default'] ) && ! empty( $option['default']  ) ? $option['default'] : '',
-			'sanitize_callback' => isset( $option['sanitize_callback'] ) && ! empty( $option['sanitize_callback']  ) ? $option['sanitize_callback'] : '',
-			'type'              => isset( $option['type'] ) && ! empty( $option['type']  ) ? $option['type'] : 'text',
-			'placeholder'       => isset( $option['placeholder'] ) && ! empty( $option['placeholder']  ) ? $option['placeholder'] : '',
-			'min'               => isset( $option['min'] ) && ! empty( $option['min']  ) ? $option['min'] : '',
-			'max'               => isset( $option['max'] ) && ! empty( $option['max']  ) ? $option['max'] : '',
-			'step'              => isset( $option['step'] ) && ! empty( $option['step']  ) ? $option['step'] : '',
+			'section'           => $section_id,
+			'sanitize_callback' => isset( $field_args['sanitize_callback'] ) && ! empty( $field_args['sanitize_callback']  ) ? $field_args['sanitize_callback'] : '',
+			'type'              => isset( $field_args['type'] ) && ! empty( $field_args['type']  ) ? $field_args['type'] : 'text',
+			'placeholder'       => isset( $field_args['placeholder'] ) && ! empty( $field_args['placeholder']  ) ? $field_args['placeholder'] : '',
 		];
+
+		// Only set "min", "max" and "step" arg to number field type.
+		if( $field_args['type'] == 'number' ) {
+			$args['min']	= isset( $field_args['min'] ) && ! empty( $field_args['min']  ) ? $field_args['min'] : '';
+			$args['max']	= isset( $field_args['max'] ) && ! empty( $field_args['max']  ) ? $field_args['max'] : '';
+			$args['step']	= isset( $field_args['step'] ) && ! empty( $field_args['step']  ) ? $field_args['step'] : '';
+		}
+
+		// Only set "rows" and "cols" arg to textarea field type.
+		if( $field_args['type'] == 'textarea' ) {
+			$args['rows']	= isset( $field_args['rows'] ) && ! empty( $field_args['rows']  ) ? $field_args['rows'] : '5'; 
+			$args['cols']	= isset( $field_args['cols'] ) && ! empty( $field_args['cols']  ) ? $field_args['cols'] : '50'; 
+		}
+		
+		// Only set "options" arg to radio|select|multi_select|multi_checkbox field types.
+		if(
+			$field_args['type'] == 'radio' ||
+			$field_args['type'] == 'select' ||
+			$field_args['type'] == 'multi_select' ||
+			$field_args['type'] == 'multi_checkbox'
+		) {
+			$args['options']	= isset( $field_args['options'] ) && ! empty( $field_args['options']  ) ? $field_args['options'] : '';
+		}
+
+		// Set "default" arg to array if multi-checkbox field type, else set it to string.
+		if( $field_args['type'] == 'multi_checkbox' ) {
+			$args['default']	= isset( $field_args['default'] ) && is_array( $field_args['default'] ) && sizeof( $field_args['default'] ) > 0 ? $field_args['default'] : [];
+		} else {
+			$args['default']	= isset( $field_args['default'] ) && ! empty( $field_args['default']  ) ? $field_args['default'] : '';
+		}
+
+		if( $field_args['type'] == 'wysiwyg' ) {
+			$args['class']		= $args['class'] . ' hz_wysiwyg_field';
+		}
 
 		return $args;
 	}
@@ -313,54 +342,57 @@ final class Settings_API {
 	}
 
 	/**
-	 * Sanitize callback for Settings API
+	 * Sanitize callback for Settings fields
+	 * 
+	 * @param array $pre_saved_values values that needs to be sanitized before saving
 	 *
-	 * @return array
+	 * @return array sanitized values that will be saved to database
 	 * 
 	 * @since 1.0
 	 * 
 	 * @access public
 	 */
-	public function sanitize_options( $options ) {
+	public function sanitize_callback( $pre_saved_values = [] ) {
 
-		// bail early if no options
-		if ( ! $options ) return $options;
+		// bail early if no pre-saved values exist
+		if ( ! $pre_saved_values || ! is_array( $pre_saved_values ) ) return $pre_saved_values;
 
-		foreach( $options as $slug => $value ) {
+		// Loops through registering section fields pre-saved values that exists in $key => $value pair.
+		foreach( $pre_saved_values as $key => $value ) {
 
-			$sanitize_callback = $this->get_sanitize_callback( $slug );
+			$sanitize_callback = $this->get_sanitize_callback( $key );
 
-			// If callback is set, call it
+			// If callback arg is set in each field, call it
 			if ( $sanitize_callback ) {
-				$options[$slug] = call_user_func( $sanitize_callback, $value ); continue;
+				$pre_saved_values[$key] = call_user_func( $sanitize_callback, $value ); continue;
 			}
 		}
 
-		return $options;
+		return $pre_saved_values;
 	}
 
 	/**
-	 * Get sanitization callback for given option slug
+	 * Get sanitization callback for given field
 	 *
-	 * @param string $slug option slug
+	 * @param string $field_id the given field id
 	 *
-	 * @return string/bool callback name if found, false otherwise
+	 * @return string/bool callback function if found, false otherwise
 	 * 
 	 * @since 1.0
 	 * 
-	 * @access public
+	 * @access private
 	 */
-	public function get_sanitize_callback( $slug = '' ) {
+	private function get_sanitize_callback( $key = '' ) {
 
 		// bail early if no slug
-		if ( empty( $slug ) ) return false;
+		if ( empty( $key ) ) return false;
 
-		// Iterate over registered fields and see if proper callback is found
-		foreach( $this->settings_fields as $section => $options ) {
+		// Loops through registering fields and see if proper callback arg is set
+		foreach( $this->fields as $section_id => $options ) {
 
-			foreach ( $options as $option ) {
+			foreach ( $options as $field_id => $option ) {
 
-				if ( $option['name'] != $slug ) continue;
+				if ( $field_id != $key ) continue;
 
 				// Return the callback name
 				return isset( $option['sanitize_callback'] ) && is_callable( $option['sanitize_callback'] ) ? $option['sanitize_callback'] : false;
@@ -385,7 +417,7 @@ final class Settings_API {
 	 * 
 	 * @access public
 	 */
-	public static function get_option( $field, $section, $default = '' ) {
+	public static function get_option( $field, $section, $default = false ) {
 
 		$options = get_option( $section );
 
@@ -453,7 +485,7 @@ final class Settings_API {
 				 * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
 				 */
 				if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
-					echo '<div class="hzfex_debug_out"><h3>'.$section['title'].' Debug Output</h3><b>Section Data:</b><pre>', htmlspecialchars( print_r( $section, true ) ), '</pre></div>';
+					echo '<div class="hzfex_debug_out"><h3>'.$section['tab_title'].' Debug Output</h3><b>Section Data:</b><pre>', htmlspecialchars( print_r( $section, true ) ), '</pre></div>';
 				}
 
 				// // Gets section callback data. 
@@ -545,7 +577,7 @@ final class Settings_API {
 			jQuery(document).ready(function($) {
 
 				//Initiate Color Picker
-				// $('.wp-color-picker-field').wpColorPicker();
+				$('.hz_color_picker_control').wpColorPicker();
 
 				// Switches option sections
 				$('.group').hide();
@@ -620,12 +652,21 @@ final class Settings_API {
 				});
 
 				// enable select2 when necessary for "select" & "multi-select" field type
-				if($('.hz_select2').length > 0) {
-					$('.hz_select2').select2({
+				if($('.hz_select_control .hz_select_control').length > 0) {
+					$('.hz_select_control .hz_select_control').select2({
 						width: '100%',
 						placeholder: 'Select Options',
+						allowClear: true,
 					});
 				}
+
+				// radio input field selection.
+				$('input[type="radio"]').on('click', function() {
+					$('input[type="radio"]').each(function(){
+						$(this).closest('li').toggleClass('hz_radio_selected', this.checked);
+					});
+				});
+				$('input:radio:checked').closest('li').addClass('hz_radio_selected');
 			});
 		</script>
 
