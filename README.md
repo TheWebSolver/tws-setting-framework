@@ -2,7 +2,7 @@
 <!-- ***
 https://www.markdownguide.org/basic-syntax/#reference-style-links
  -->
-<div style="text-align:center;">
+<p align="center">
 
 <!-- [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
@@ -11,14 +11,14 @@ https://www.markdownguide.org/basic-syntax/#reference-style-links
 [![GPL License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
-</div>
+</p>
 <!-- ***
 <!-- -->
 
 
 <!-- PROJECT LOGO -->
 <br />
-<p style="text-align:center">
+<p align="center">
   <a href="https://github.com/TheWebSolver/tws-setting-framework">
     <img src="images/official_logo.png" alt="Logo" width="80" height="80">
   </a>
