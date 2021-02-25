@@ -19,7 +19,7 @@
 
 namespace TheWebSolver\Register;
 
-use TheWebSolver\Core\Setting\Option;
+use TheWebSolver\Core\Setting\Container;
 use TheWebSolver\Core\Setting\Test;
 // phpcs:disable
 /**
@@ -64,7 +64,7 @@ function setting (
         'icon'          => $icon
     ];
 
-    $option = new Option( $id, $parent_slug );
+    $option = new Container( $id, $parent_slug );
     $option
     ->set_page( $page )
 	->add_section( 'new_api_section', array(
@@ -84,13 +84,15 @@ function setting (
 		'desc'      => __( 'You should definitely enable this to test other types of input fields.', 'tws-core' ),
 		'type'      => 'checkbox',
 		'class'     => 'hz_switcher_control',
-		'default'   => 'off'
+		'default'   => 'off',
+		'priority'  => 12,
 	) )
 	->add_field( 'new_field_test_two', 'new_api_section', array(
 		'label'      => 'Interface Field Label',
 		'type'       => 'checkbox',
 		'class'      => 'hz_switcher_control',
 		'default'    => 'off',
+		'priority'   =>15,
 	) )
 	->add_field( 'new_field_test_three', 'hooks_new', array(
 		'label'      => 'Interface Field Label',
@@ -99,7 +101,7 @@ function setting (
 		'default'    => 'This is default text.',
 		'sanitize_callback' => 'sanitize_text_field',
 	) )
-    ->set_sections( $sections )
+    // ->set_sections( $sections )
     ->set_capability( $capability )
     ->set_menu();
 }
