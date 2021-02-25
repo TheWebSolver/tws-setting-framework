@@ -33,9 +33,9 @@ class Container {
 	/**
 	 * WordPress Core Settings API class instance.
 	 *
-	 * Sets an instance of `Settings_API()` class
+	 * Sets an instance of `Options()` class
 	 *
-	 * @var Settings_API|null
+	 * @var Options|null
 	 *
 	 * @since 1.0
 	 *
@@ -233,10 +233,10 @@ class Container {
 		}
 
 		// Create Settings API instance.
-		$this->setting = new Settings_API();
+		$this->setting = new Options();
 
 		// Gets Setting Fields.
-		require_once HZFEX_SETTING_PATH . 'setting/setting-fields.php';
+		require_once HZFEX_SETTING_PATH . 'setting/Fields.php';
 
 		// Hooks on each menu/submenu page load.
 		add_action( 'load-' . $this->hook_suffix, array( $this, 'load' ) );

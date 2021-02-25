@@ -87,7 +87,7 @@ final class Plugin {
 		// Define plugin debug mode. DEBUG: set to true when needed.
 		// TWS Core plugin already defines it.
 		if ( ! defined( 'HZFEX_DEBUG_MODE' ) ) {
-			define( 'HZFEX_DEBUG_MODE', true );
+			define( 'HZFEX_DEBUG_MODE', false );
 		}
 
 		define( 'HZFEX_SETTING', __( 'The Web Solver Setting Framework', 'tws-setting' ) );
@@ -116,11 +116,8 @@ final class Plugin {
 	 */
 	private function init() {
 		// Require necessary plugin files.
-		require_once HZFEX_SETTING_PATH . 'setting/setting-api.php';
-		require_once HZFEX_SETTING_PATH . 'setting/setting-component.php'; // TODO: REMOVE.
-
-		require_once __DIR__ . '/Helper/Options.php';
-
+		require_once __DIR__ . '/Source/Options.php';
+		require_once __DIR__ . '/Source/Container.php';
 
 		include_once HZFEX_SETTING_PATH . 'setting/Page_Interface.php';
 		include_once HZFEX_SETTING_PATH . 'setting/Page.php';
@@ -129,7 +126,7 @@ final class Plugin {
 		require_once __DIR__ . '/API/API.php';
 
 		// Example files. delete if not needed.
-		$this->include_examples();
+		// $this->include_examples(); //phpcs:ignore -- Valid comment OK.
 
 		// Register this plugin as extension to TWS Core.
 		// Using inside hook so it always fire after core plugin is loaded.
@@ -153,7 +150,7 @@ final class Plugin {
 				'read',
 				HZFEX_SETTING_MENU,
 				'', // 404 error if no callback function passed.
-				'', // TODO: add icon.
+				'',
 				3.1008
 			);
 		}
