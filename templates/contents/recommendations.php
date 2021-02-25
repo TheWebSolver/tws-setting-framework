@@ -1,13 +1,13 @@
 <?php
 /**
  * Template file to display content on recommendations tab
- * 
+ *
  * @since 1.0
- * 
+ *
  * @package tws-core
  * @subpackage framework
  * @category template
- * 
+ *
  * -----------------------------------
  * DEVELOPED-MAINTAINED-SUPPPORTED BY
  * -----------------------------------
@@ -20,7 +20,7 @@
  * ███║     ███║   ████████████████╗
  * ╚═╝      ╚═╝    ═══════════════╝
  */
-namespace TheWebSolver\Plugin\Core\Framework;
+namespace TheWebSolver\Core\Setting;
 
 // exit if file is accessed directly
 if( ! defined( 'ABSPATH' ) ) exit;
@@ -113,7 +113,7 @@ function pretty_print($json_data) {
         echo "\n";
         echo str_repeat(' ', ($space*2));
         }
-        
+
 
         //Checking for double quote(“) and comma (,)
         if ( $json_data[$counter] == '"' && ($json_data[$counter-1] == ',' ||

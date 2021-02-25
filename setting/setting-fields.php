@@ -1,11 +1,11 @@
 <?php
 /**
  * Setting Framework Field API
- * 
+ *
  * @package tws-core
  * @subpackage framework
  * @category wordpress-setting-api
- * 
+ *
  * -----------------------------------
  * DEVELOPED-MAINTAINED-SUPPPORTED BY
  * -----------------------------------
@@ -19,7 +19,7 @@
  * ╚═╝      ╚═╝    ═══════════════╝
  */
 
-namespace TheWebSolver\Plugin\Core\Framework;
+namespace TheWebSolver\Core\Setting;
 
 // exit if file is accessed directly
 if( ! defined( 'ABSPATH' ) ) exit;
@@ -30,18 +30,18 @@ if( ! defined( 'ABSPATH' ) ) exit;
  * @param array $field  text field data in an array
  * @param string $value $field value
  * @param string $desc  $field description
- * 
+ *
  * @return string HTML formatted text input field
- * 
+ *
  * @since 1.0
  */
 function text_field( $field, $value, $desc ) {
 
     /**
      * DEBUG: Text Field args.
-     * 
+     *
      * @example usage: Set to true on main plugin file.
-     * 
+     *
      * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
     if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
@@ -50,7 +50,7 @@ function text_field( $field, $value, $desc ) {
 
     // Gets value of section that this field belongs to.
     $section_value = get_option( $field['section'], false );
-    
+
     // Sets value based on section value. If section has been saved then, select value from it.
     $value = is_array( $section_value ) && array_key_exists( $field['id'], $section_value ) ? $value : $field['default'];
 
@@ -65,7 +65,7 @@ function text_field( $field, $value, $desc ) {
     */
     $html           = sprintf(
         '<input type="text" class="hz_text_input %1$s" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s"%5$s/>',
-        $field['class'], $field['section'], $field['id'], $value, $placeholder 
+        $field['class'], $field['section'], $field['id'], $value, $placeholder
     );
 
     $html           .= $desc;
@@ -79,18 +79,18 @@ function text_field( $field, $value, $desc ) {
  * @param array $field  number field data in an array
  * @param string $value $field value
  * @param string $desc  $field description
- * 
+ *
  * @return string HTML formatted number input field
- * 
+ *
  * @since 1.0
  */
 function number_field( $field, $value, $desc ) {
 
     /**
      * DEBUG: Number Field args.
-     * 
+     *
      * @example usage: Set to true on main plugin file.
-     * 
+     *
      * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
     if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
@@ -99,7 +99,7 @@ function number_field( $field, $value, $desc ) {
 
     // Gets value of section that this field belongs to.
     $section_value = get_option( $field['section'], false );
-    
+
     // Sets value based on section value. If section has been saved then, select value from it.
     $value = is_array( $section_value ) && array_key_exists( $field['id'], $section_value ) ? $value : $field['default'];
 
@@ -129,18 +129,18 @@ function number_field( $field, $value, $desc ) {
  * @param array $field  checkbox field data in an array
  * @param string $value $field value
  * @param string $desc  $field description
- * 
+ *
  * @return string HTML formatted checkbox input field
- * 
+ *
  * @since 1.0
  */
 function checkbox_field( $field, $value, $desc ) {
 
     /**
      * DEBUG: Checkbox Field args.
-     * 
+     *
      * @example usage: Set to true on main plugin file.
-     * 
+     *
      * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
     if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
@@ -149,7 +149,7 @@ function checkbox_field( $field, $value, $desc ) {
 
     // Gets value of section that this field belongs to.
     $section_value = get_option( $field['section'], false );
-    
+
     // Sets value based on section value. If section has been saved then, select value from it.
     $value = is_array( $section_value ) && array_key_exists( $field['id'], $section_value ) ? $value : $field['default'];
 
@@ -160,7 +160,7 @@ function checkbox_field( $field, $value, $desc ) {
 
     /* translators: %1$s is the section ID in which field belongs. %2$s is the field ID. */
     $html  .= sprintf( '<input type="hidden" name="%1$s[%2$s]" value="off" />', $field['section'], $field['id'] );
-    
+
     $html  .= $desc;
 
     /* translators:
@@ -182,18 +182,18 @@ function checkbox_field( $field, $value, $desc ) {
  * @param array $field  multi-checkbox field data in an array
  * @param string $value $field value
  * @param string $desc  $field description
- * 
+ *
  * @return string HTML formatted multi-checkbox input field
- * 
+ *
  * @since 1.0
  */
 function multi_checkbox_field( $field, $value, $desc ) {
 
     /**
      * DEBUG: Multi-checkbox Field args.
-     * 
+     *
      * @example usage: Set to true on main plugin file.
-     * 
+     *
      * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
     if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
@@ -249,7 +249,7 @@ function multi_checkbox_field( $field, $value, $desc ) {
 
         $html   .= '</li>';
     }
-    
+
     $html       .= '</ul></fieldset>';
 
     echo $html;
@@ -261,18 +261,18 @@ function multi_checkbox_field( $field, $value, $desc ) {
  * @param array $field  radio field data in an array
  * @param string $value $field value
  * @param string $desc  $field description
- * 
+ *
  * @return string HTML formatted radio input field
- * 
+ *
  * @since 1.0
  */
 function radio_field( $field, $value, $desc ) {
 
     /**
      * DEBUG: Radio Field args.
-     * 
+     *
      * @example usage: Set to true on main plugin file.
-     * 
+     *
      * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
     if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
@@ -316,18 +316,18 @@ function radio_field( $field, $value, $desc ) {
  * @param array $field  select field data in an array
  * @param string $value $field value
  * @param string $desc  $field description
- * 
+ *
  * @return string HTML formatted select field
- * 
+ *
  * @since 1.0
  */
 function select_field( $field, $value, $desc ) {
 
     /**
      * DEBUG: Select Field args.
-     * 
+     *
      * @example usage: Set to true on main plugin file.
-     * 
+     *
      * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
     if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
@@ -336,7 +336,7 @@ function select_field( $field, $value, $desc ) {
 
     // Gets value of section that this field belongs to.
     $section_value = get_option( $field['section'], false );
-    
+
     // Sets value based on section value. If section has been saved then, select value from it.
     $value      = is_array( $section_value ) && array_key_exists( $field['id'], $section_value ) ? $value : '';
     $default    = (string) $field['default']; // gets default field options key
@@ -382,18 +382,18 @@ function select_field( $field, $value, $desc ) {
  * @param array $field  select field data in an array
  * @param array $value  $field value
  * @param string $desc  $field description
- * 
+ *
  * @return string HTML formatted select field
- * 
+ *
  * @since 1.0
  */
 function multi_select_field( $field, $value, $desc ) {
 
     /**
      * DEBUG: Multi-select Field args.
-     * 
+     *
      * @example usage: Set to true on main plugin file.
-     * 
+     *
      * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
     if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
@@ -416,7 +416,7 @@ function multi_select_field( $field, $value, $desc ) {
         %3$s is the field ID.
     */
     $html   = sprintf( '<select class="hz_multi_select %1$s" name="%2$s[%3$s][]" id="%2$s[%3$s]" multiple="multiple">', $field['class'], $field['section'], $field['id'] );
-    
+
     foreach ( $field['options'] as $key => $label ) {
 
         $selected = ''; // defines selected status
@@ -451,18 +451,18 @@ function multi_select_field( $field, $value, $desc ) {
  * @param array $field  textarea field data in an array
  * @param string $value $field value
  * @param string $desc  $field description
- * 
+ *
  * @return string HTML formatted textarea input field
- * 
+ *
  * @since 1.0
  */
 function textarea_field( $field, $value, $desc ) {
 
     /**
      * DEBUG: Textarea Field args.
-     * 
+     *
      * @example usage: Set to true on main plugin file.
-     * 
+     *
      * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
     if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
@@ -495,18 +495,18 @@ function textarea_field( $field, $value, $desc ) {
  * @param array $field  wysiwyg field data in an array
  * @param string $value $field value
  * @param string $desc  $field description
- * 
+ *
  * @return string HTML formatted wysiwyg field
- * 
+ *
  * @since 1.0
  */
 function wysiwyg_field( $field, $value, $desc ) {
 
     /**
      * DEBUG: WYSIWYG Field args.
-     * 
+     *
      * @example usage: Set to true on main plugin file.
-     * 
+     *
      * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
     if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
@@ -540,18 +540,18 @@ function wysiwyg_field( $field, $value, $desc ) {
  * @param array $field  file selection field data in an array
  * @param string $value $field value
  * @param string $desc  $field description
- * 
+ *
  * @return string HTML formatted file selection field
- * 
+ *
  * @since 1.0
  */
 function file_field( $field, $value, $desc ) {
 
     /**
      * DEBUG: File Field args.
-     * 
+     *
      * @example usage: Set to true on main plugin file.
-     * 
+     *
      * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
     if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
@@ -581,18 +581,18 @@ function file_field( $field, $value, $desc ) {
  * @param array $field  color field data in an array
  * @param string $value $field value
  * @param string $desc  $field description
- * 
+ *
  * @return string HTML formatted color input field
- * 
+ *
  * @since 1.0
  */
 function color_field( $field, $value, $desc ) {
 
     /**
      * DEBUG: Color Field args.
-     * 
+     *
      * @example usage: Set to true on main plugin file.
-     * 
+     *
      * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
     if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
@@ -620,18 +620,18 @@ function color_field( $field, $value, $desc ) {
  * @param array $field  password field data in an array
  * @param string $value $field value
  * @param string $desc  $field description
- * 
+ *
  * @return string HTML formatted password input field
- * 
+ *
  * @since 1.0
  */
 function password_field( $field, $value, $desc ) {
 
     /**
      * DEBUG: Password Field args.
-     * 
+     *
      * @example usage: Set to true on main plugin file.
-     * 
+     *
      * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
     if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
@@ -658,18 +658,18 @@ function password_field( $field, $value, $desc ) {
  * @param array $field  pages field data in an array
  * @param string $value $field value
  * @param string $desc  $field description
- * 
+ *
  * @return string HTML formatted pages select field
- * 
+ *
  * @since 1.0
  */
 function pages_field( $field, $value, $desc ) {
 
     /**
      * DEBUG: Pages Field args.
-     * 
+     *
      * @example usage: Set to true on main plugin file.
-     * 
+     *
      * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
     if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
@@ -692,18 +692,18 @@ function pages_field( $field, $value, $desc ) {
  * @param array $field  categories field data in an array
  * @param string $value $field value
  * @param string $desc  $field description
- * 
+ *
  * @return string HTML formatted categories select field
- * 
+ *
  * @since 1.0
  */
 function categories_field( $field, $value, $desc ) {
 
     /**
      * DEBUG: Categories Field args.
-     * 
+     *
      * @example usage: Set to true on main plugin file.
-     * 
+     *
      * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
      */
     if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {

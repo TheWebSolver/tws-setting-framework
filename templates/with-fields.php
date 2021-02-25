@@ -1,13 +1,13 @@
 <?php
 /**
  * Submenu page with menu title as "Fields Demo" under main menu "The Web Solver"
- * 
+ *
  * @since       1.0
- * 
+ *
  * @package     tws-core
  * @subpackage  framework
  * @category    wordpress-setting-api
- * 
+ *
  * -----------------------------------
  * DEVELOPED-MAINTAINED-SUPPPORTED BY
  * -----------------------------------
@@ -21,7 +21,7 @@
  * ╚═╝      ╚═╝    ═══════════════╝
  */
 
-namespace TheWebSolver\Plugin\Core\Framework;
+namespace TheWebSolver\Core\Setting;
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -30,9 +30,10 @@ final class With_Fields extends Setting_Component {
 
     /** Constructor */
     public function __construct() {
-        parent::__construct( 
+        parent::__construct(
             [
                 __CLASS__ => [
+                    'menu_slug'    => HZFEX_SETTING_MENU,
                     'page_title'    => __( 'Fields Demo', 'tws-core' ),
                     'menu_title'    => __( 'Fields Demo', 'tws-core' ),
                     'cap'           => 'manage_options',
@@ -47,6 +48,7 @@ final class With_Fields extends Setting_Component {
     protected function sections() {
         $section = [
             'simple_section_id' => [
+                'capability' => 'jpt',
                 'title'     => __( 'General Setting Section', 'tws-core' ),
                 'tab_title' => __( 'General', 'tws-core' ),
                 'desc'      => sprintf( '<p>%1$s</p>', __( 'This section demonstrates general setting fields.', 'tws-core' ) ),
@@ -117,6 +119,7 @@ final class With_Fields extends Setting_Component {
                 ],
             ],
             'advanced_section_id' => [
+                'capability' => 'read',
                 'title'     => __( 'Advanced Setting Section', 'tws-core' ),
                 'tab_title' => __( 'Advanced', 'tws-core' ),
                 'desc'      => sprintf( '<p>%1$s</p>', __( 'This section demonstrates advanced setting fields', 'tws-core' ) ),
@@ -173,6 +176,7 @@ final class With_Fields extends Setting_Component {
                 ],
             ],
             'customized_section_id' => [
+                'capability' => 'read',
                 'title'                  => 'Customized Form Fields',
                 'tab_title'              => __( 'Stylized Fields', 'tws-core' ),
                 'desc'                   => __( 'Fields that have class applied to change the appearance', 'tws-core' ),

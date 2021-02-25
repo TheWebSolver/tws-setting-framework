@@ -1,13 +1,13 @@
 <?php
 /**
  * Template file to display content on welcome tab
- * 
+ *
  * @since 1.0
- * 
+ *
  * @package tws-core
  * @subpackage framework
  * @category template
- * 
+ *
  * -----------------------------------
  * DEVELOPED-MAINTAINED-SUPPPORTED BY
  * -----------------------------------
@@ -20,7 +20,7 @@
  * ███║     ███║   ████████████████╗
  * ╚═╝      ╚═╝    ═══════════════╝
  */
-namespace TheWebSolver\Plugin\Core\Framework;
+namespace TheWebSolver\Core\Setting;
 
 // exit if file is accessed directly
 if( ! defined( 'ABSPATH' ) ) exit;
@@ -30,7 +30,7 @@ if( ! defined( 'ABSPATH' ) ) exit;
 <div id="hzfex_welcome">
     <div class="hz_flx">
         <div class="hz_welcome_image">
-            <img src="<?= HZFEX_Setting_Framework_Url . 'assets/graphics/setting.png'; ?>">
+            <img src="<?= HZFEX_SETTING_URL . 'assets/graphics/setting.png'; ?>">
         </div>
     </div>
     <div class="hz_container_content hz_center">
@@ -53,7 +53,7 @@ if( ! defined( 'ABSPATH' ) ) exit;
                         </g>
                     </g>
                 </svg>
-                
+
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 82.67 87.36" class="hz_sml_svg hz_triangle3d_svg">
                     <g class="svg_isolate">
                     <g class="svg_blend_mode_overlay">
@@ -95,7 +95,7 @@ if( ! defined( 'ABSPATH' ) ) exit;
                     </div>
                     <div class="hz_thumb_details right">
                         <h4>Easy to use and implement</h4>
-                        <p class="hz_color_off hz_small">If you are getting this from 
+                        <p class="hz_color_off hz_small">If you are getting this from
                             <a href="https://github.com/TheWebSolver/tws-setting-framework" target="_blank">github</a>, you will know what to do!</p>
                     </div>
                 </div>

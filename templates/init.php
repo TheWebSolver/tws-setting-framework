@@ -23,7 +23,7 @@
  * ╚═╝      ╚═╝    ═══════════════╝
  */
 
-namespace TheWebSolver\Plugin\Core\Framework;
+namespace TheWebSolver\Core\Setting;
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -43,10 +43,10 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * Change main menu to one of WordPress default -> `Settings`
  * 
  * ```
- * define( 'HZFEX_SETTING_FRAMEWORK_MENU', 'options-general.php' );
+ * define( 'HZFEX_ADMIN_MENU', 'options-general.php' );
  * ```
  */
-define( 'HZFEX_SETTING_FRAMEWORK_MENU', 'tws_setting_framework' );
+define( 'HZFEX_ADMIN_MENU', 'tws_setting_framework' );
 
 
 function setup_plugin() {
@@ -55,15 +55,15 @@ function setup_plugin() {
     *
     * NOTE: the file included first comes first in main menu.
     */
-   include_once 'without-fields.php';
-   include_once 'with-fields.php';
+   // include_once __DIR__ . '/without-fields.php';
+   // include_once __DIR__ . '/with-fields.php';
 }
 add_action( 'after_setup_theme', __NAMESPACE__ . '\setup_plugin' );
 
 function enqueue_scripts() {
 
    // register stylesheet.
-   wp_register_style( 'hzfex_setting_page_style', HZFEX_Setting_Framework_Url . 'assets/style.css', HZFEX_Setting_Framework_Version );
+   wp_register_style( 'hzfex_setting_page_style', HZFEX_SETTING_URL . 'assets/style.css', HZFEX_SETTING_VERSION );
 
    // if only framework loaded.
    if( ! function_exists( 'tws_core' ) ) {
@@ -85,14 +85,14 @@ function tws_setting_framework_main_menu() {
             __( 'The Web Solver', 'tws-core' ),
             __( 'The Web Solver', 'tws-core' ),
             'read',
-            HZFEX_SETTING_FRAMEWORK_MENU,
+            HZFEX_ADMIN_MENU,
             __NAMESPACE__ . '\tws_setting_framework_main_page',
             '',
             3.1008
     );
 }
 // adds main menu page only if menu constant is defined as 'tws_setting_framework'.
-if( HZFEX_SETTING_FRAMEWORK_MENU === (string) 'tws_setting_framework' ) {
+if( HZFEX_ADMIN_MENU === (string) 'tws_setting_framework' ) {
     add_action( 'admin_menu', __NAMESPACE__ . '\tws_setting_framework_main_menu' );
 }
 
@@ -102,7 +102,7 @@ if( HZFEX_SETTING_FRAMEWORK_MENU === (string) 'tws_setting_framework' ) {
  * @return void
  */
 function tws_setting_framework_main_page() {
-   include_once HZFEX_Setting_Framework_Path . 'templates/contents/welcome.php';
+   include_once HZFEX_SETTING_PATH . 'templates/contents/welcome.php';
    wp_enqueue_style( 'hzfex_setting_page_style' );
 };
 

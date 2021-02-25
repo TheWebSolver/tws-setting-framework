@@ -1,13 +1,13 @@
 <?php
 /**
  * Template file to display content on hooks & filters tab
- * 
+ *
  * @since 1.0
- * 
+ *
  * @package tws-core
  * @subpackage framework
  * @category template
- * 
+ *
  * -----------------------------------
  * DEVELOPED-MAINTAINED-SUPPPORTED BY
  * -----------------------------------
@@ -20,7 +20,7 @@
  * ███║     ███║   ████████████████╗
  * ╚═╝      ╚═╝    ═══════════════╝
  */
-namespace TheWebSolver\Plugin\Core\Framework;
+namespace TheWebSolver\Core\Setting;
 
 // exit if file is accessed directly
 if( ! defined( 'ABSPATH' ) ) exit;

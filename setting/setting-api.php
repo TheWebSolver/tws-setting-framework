@@ -1,15 +1,15 @@
 <?php
 /**
  * WordPress Setting Framework API
- * 
+ *
  * @package tws-core
  * @subpackage framework
  * @category wordpress-setting-api
- * 
+ *
  * Based on tareq1988
  * @author Tareq Hasan <tareq@weDevs.com>
  * @filesource https://github.com/tareq1988/wordpress-settings-api-class/blob/master/src/class.settings-api.php
- * 
+ *
  * -----------------------------------
  * DEVELOPED-MAINTAINED-SUPPPORTED BY
  * -----------------------------------
@@ -23,19 +23,19 @@
  * ╚═╝      ╚═╝    ═══════════════╝
  */
 
-namespace TheWebSolver\Plugin\Core\Framework;
+namespace TheWebSolver\Core\Setting;
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * TheWebSolver\Plugin\Core\Framework\Settings_API class
- * 
+ * TheWebSolver\Core\Setting\Settings_API class
+ *
  * It is initialized in Setting_Component() class.
- * 
+ *
  * @method array set_sections() Sets setting sections from `Setting_Component()`
  * @method array set_fields() Sets setting sections' fields from `Setting_Component()`
- * 
+ *
  * @api
  */
 final class Settings_API {
@@ -44,9 +44,9 @@ final class Settings_API {
 	 * settings sections array
 	 *
 	 * @var array
-	 * 
+	 *
 	 * @since 1.0
-	 * 
+	 *
 	 * @access protected
 	 */
 	protected $sections = [];
@@ -55,20 +55,20 @@ final class Settings_API {
 	 * Settings fields array
 	 *
 	 * @var array
-	 * 
+	 *
 	 * @since 1.0
-	 * 
+	 *
 	 * @access protected
 	 */
 	protected $fields   = [];
 
 	/**
 	 * Supported Input Fields Types
-	 * 
+	 *
 	 * @var array
-	 * 
+	 *
 	 * @since 1.0
-	 * 
+	 *
 	 * @access private
 	 */
 	private $field_types   = [ 'text', 'number', 'checkbox', 'multi_checkbox', 'radio', 'select', 'multi_select', 'textarea', 'wysiwyg', 'file', 'color', 'pages', 'password', 'categories' ];
@@ -77,9 +77,9 @@ final class Settings_API {
 	 * Sets settings sections
 	 *
 	 * @param array
-	 * 
+	 *
 	 * @since 1.0
-	 * 
+	 *
 	 * @access public
 	 */
 	public function set_sections( $sections ) {
@@ -91,9 +91,9 @@ final class Settings_API {
 	 * Sets settings fields
 	 *
 	 * @param array $fields
-	 * 
+	 *
 	 * @since 1.0
-	 * 
+	 *
 	 * @access public
 	 */
 	public function set_fields( $fields ) {
@@ -103,13 +103,13 @@ final class Settings_API {
 
 	/**
 	 * Main function to register settings and it's sections and fields
-	 * 
+	 *
 	 * @since 1.0
-	 * 
+	 *
 	 * @uses add_settings_section() Registers setting page sections
 	 * @uses add_settings_field()   Registers setting page fields
 	 * @uses register_setting()     Registers setting page
-	 * 
+	 *
 	 * @access public
 	 */
 	public function register_setting() {
@@ -122,10 +122,10 @@ final class Settings_API {
 
 			// Gets callback data from section args.
 			$callback = $this->section_callback( $section );
-			
+
 			/**
 			 * Adds new section to settings page.
-			 * 
+			 *
 			 * NOTE: Regarding user capability
 			 * `$section['id']` is used when filtering option page capability
 			 */
@@ -134,7 +134,7 @@ final class Settings_API {
 
 		// add setting fields only if fields are set in section.
 		if( $this->fields && is_array( $this->fields ) && sizeof( $this->fields ) > 0 ) {
-			
+
 			// Registers settings fields
 			foreach ( $this->fields as $section_id => $fields ) {
 
@@ -145,7 +145,7 @@ final class Settings_API {
 					$id		= "{$section_id}[{$field_id}]";
 					$callback   = isset( $field_args['callback'] ) ? $field_args['callback'] : [ __CLASS__, 'field_callback' ];
 
-					
+
 
 					// Adds new fields to each sections
 					add_settings_field( "{$id}", $args['name'], $callback, $section_id, $section_id, $args );
@@ -164,16 +164,16 @@ final class Settings_API {
 			);
 		}
 	}
-	
+
 	/**
 	 * Gets Setting section callbacks
 	 *
 	 * @param array $section
-	 * 
+	 *
 	 * @return void/null
-	 * 
+	 *
 	 * @since 1.0
-	 * 
+	 *
 	 * @access private
 	 */
 	private function section_callback( $section ) {
@@ -200,11 +200,11 @@ final class Settings_API {
 	 * @param array $section section data
 	 * @param string $id field ID
 	 * @param array $option field data
-	 * 
+	 *
 	 * @return array
-	 * 
+	 *
 	 * @since 1.0
-	 * 
+	 *
 	 * @access private
 	 */
 	private function field_data( $section_id, $field_id, $field_args ) {
@@ -233,10 +233,10 @@ final class Settings_API {
 
 		// Only set "rows" and "cols" arg to textarea field type.
 		if( $field_args['type'] == 'textarea' ) {
-			$args['rows']	= isset( $field_args['rows'] ) && ! empty( $field_args['rows']  ) ? $field_args['rows'] : '5'; 
-			$args['cols']	= isset( $field_args['cols'] ) && ! empty( $field_args['cols']  ) ? $field_args['cols'] : '50'; 
+			$args['rows']	= isset( $field_args['rows'] ) && ! empty( $field_args['rows']  ) ? $field_args['rows'] : '5';
+			$args['cols']	= isset( $field_args['cols'] ) && ! empty( $field_args['cols']  ) ? $field_args['cols'] : '50';
 		}
-		
+
 		// Only set "options" arg to radio|select|multi_select|multi_checkbox field types.
 		if(
 			$field_args['type'] == 'radio' ||
@@ -265,13 +265,13 @@ final class Settings_API {
 	 * Get Setting Fields utility functions
 	 *
 	 * @param array $field
-	 * 
+	 *
 	 * @return mixed HTML field output according to it's type
-	 * 
+	 *
 	 * @since 1.0
-	 * 
+	 *
 	 * @static
-	 * 
+	 *
 	 * @access public
 	 */
 	public static function field_callback( $field ) {
@@ -295,19 +295,19 @@ final class Settings_API {
 			case 'radio' : radio_field( $field, $value, $desc ); break;
 
 			case 'select' :
-				
+
 				// only enqueue select2 on pages with select field.
 				wp_enqueue_script( 'hzfex_select2' );
 				wp_enqueue_style( 'hzfex_select2_style' );
 				select_field( $field, $value, $desc ); break;
 
 			case 'multi_select' :
-				
+
 				// only enqueue select2 on pages with multi-select field.
 				wp_enqueue_script( 'hzfex_select2' );
 				wp_enqueue_style( 'hzfex_select2_style' );
 				multi_select_field( $field, $value, $desc ); break;
-			
+
 			case 'textarea' : textarea_field( $field, $value, $desc ); break;
 
 			case 'wysiwyg' : wysiwyg_field( $field, $value, $desc ); break;
@@ -328,11 +328,11 @@ final class Settings_API {
 	 * Display field description
 	 *
 	 * @param array   $field settings field
-	 * 
+	 *
 	 * @since 1.0
-	 * 
+	 *
 	 * @static
-	 * 
+	 *
 	 * @access public
 	 */
 	public static function get_field_description( $field ) {
@@ -343,13 +343,13 @@ final class Settings_API {
 
 	/**
 	 * Sanitize callback for Settings fields
-	 * 
+	 *
 	 * @param array $pre_saved_values values that needs to be sanitized before saving
 	 *
 	 * @return array sanitized values that will be saved to database
-	 * 
+	 *
 	 * @since 1.0
-	 * 
+	 *
 	 * @access public
 	 */
 	public function sanitize_callback( $pre_saved_values = [] ) {
@@ -377,9 +377,9 @@ final class Settings_API {
 	 * @param string $field_id the given field id
 	 *
 	 * @return string/bool callback function if found, false otherwise
-	 * 
+	 *
 	 * @since 1.0
-	 * 
+	 *
 	 * @access private
 	 */
 	private function get_sanitize_callback( $key = '' ) {
@@ -408,13 +408,13 @@ final class Settings_API {
 	 * @param string  $field    settings field name
 	 * @param string  $section  the section name of $field
 	 * @param string  $default  default text if $field not found
-	 * 
+	 *
 	 * @return string
-	 * 
+	 *
 	 * @since 1.0
-	 * 
+	 *
 	 * @static
-	 * 
+	 *
 	 * @access public
 	 */
 	public static function get_option( $field, $section, $default = false ) {
@@ -429,11 +429,11 @@ final class Settings_API {
 	 * Show navigations as tab
 	 *
 	 * Display Section Label as tab name
-	 * 
+	 *
 	 * @return string   Section Name in HTML format
-	 * 
+	 *
 	 * @since 1.0
-	 * 
+	 *
 	 * @access public
 	 */
 	public function show_navigation() {
@@ -463,32 +463,32 @@ final class Settings_API {
 	 * Show the section settings forms
 	 *
 	 * Display each section as forms with its fields as tab
-	 * 
+	 *
 	 * @since 1.0
-	 * 
+	 *
 	 * @access public
 	 */
 	public function show_forms() {
 
 		echo '<div class="metabox-holder">';
 
-			// loops through all sections and output content accordingly. 
+			// loops through all sections and output content accordingly.
 			foreach ( $this->sections as $section ) {
 
 				echo '<div id="'.$section['id'].'" class="group" style="display: none;">';
 
 				/**
 				 * DEBUG: Section Field args.
-				 * 
+				 *
 				 * @example usage: Set to true on main plugin file.
-				 * 
+				 *
 				 * define( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE', true );
 				 */
-				if( defined( 'HZFEX_SETTING_FRAMEWORK_DEBUG_MODE' ) && HZFEX_SETTING_FRAMEWORK_DEBUG_MODE ) {
+				if( defined( 'HZFEX_DEBUG_MODE' ) && HZFEX_DEBUG_MODE ) {
 					echo '<div class="hzfex_debug_out"><h3>'.$section['tab_title'].' Debug Output</h3><b>Section Data:</b><pre>', htmlspecialchars( print_r( $section, true ) ), '</pre></div>';
 				}
 
-				// // Gets section callback data. 
+				// // Gets section callback data.
 				if( $section['callback'] && is_callable( $section['callback'] ) ) {
 					call_user_func( $section['callback'] );
 				}
@@ -508,15 +508,15 @@ final class Settings_API {
 
 	/**
 	 * Creates form tags, sets setting sections and fields.
-	 * 
+	 *
 	 * Main method that actually displays form and its data.
 	 *
 	 * @param array $form section and its data.
-	 * 
+	 *
 	 * @return void
-	 * 
+	 *
 	 * @since 1.0
-	 * 
+	 *
 	 * @access private
 	 */
 	private function show_fields( $section ) {
@@ -548,11 +548,11 @@ final class Settings_API {
 	 * Checks if section has valid input fields to show submit button
 	 *
 	 * @param array $fields all fields that belong to a section
-	 * 
+	 *
 	 * @return bool true if any one field type matches, else false
-	 * 
+	 *
 	 * @since 1.0
-	 * 
+	 *
 	 * @access private
 	 */
 	private function has_input_field( $fields ) {
@@ -566,9 +566,9 @@ final class Settings_API {
 	 * Tabbable JavaScript codes & Initiate Color Picker
 	 *
 	 * This code uses localstorage for displaying active tabs
-	 * 
+	 *
 	 * @since 1.0
-	 * 
+	 *
 	 * @access public
 	 */
 	public function script() {

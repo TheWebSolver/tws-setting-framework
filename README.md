@@ -58,7 +58,7 @@ https://www.markdownguide.org/basic-syntax/#reference-style-links
 #### Screenshot 2
 ![Screenshot 2][screenshot-2]
 
-### Preface 
+### Preface
 <small>[Top↑](#table-of-contents)</small>
 
 This framework is a ready to use plugin _<small>(if not building your own plugin or theme)_</small> or to include inside your own plugin/theme for anyone who needs to create: <br/>
@@ -110,7 +110,7 @@ This plugin is developed using:
 
 - This framework uses PHP Namespace:
     ```php
-    namespace TheWebSolver\Plugin\Core\Framework;
+    namespace TheWebSolver\Core\Setting;
     ```
 
 - This framework creates main menu with title as **"The Web Solver"**. In file [init.php](https://github.com/TheWebSolver/tws-setting-framework/tree/master/templates/init.php), see function:
@@ -147,7 +147,7 @@ This plugin is developed using:
     * Submenu page with menu title as "Welcome" under main menu "The Web Solver"
     */
 
-    namespace TheWebSolver\Plugin\Core\Framework;
+    namespace TheWebSolver\Core\Setting;
 
     // Exit if accessed directly
     if ( ! defined( 'ABSPATH' ) ) exit;
@@ -156,7 +156,7 @@ This plugin is developed using:
 
         /** Constructor */
         public function __construct() {
-            parent::__construct( 
+            parent::__construct(
                 [
                     __CLASS__ => [
                         'menu_slug'     => '', // uses default if not set
@@ -164,7 +164,7 @@ This plugin is developed using:
                         'menu_title'    => __( 'Welcome', 'tws-core' ),
                         'cap'           => 'read', // wordpress user capability to view page and edit/update page section fields
                         'slug'          =>'tws_welcome_page', // submenu page slug
-                        'icon'          => HZFEX_Setting_Framework_Url . 'assets/graphics/files-icon.svg', // icon that displays on before page navigation title (files icon before page title Welcome in screenshot 1)
+                        'icon'          => HZFEX_SETTING_URL . 'assets/graphics/files-icon.svg', // icon that displays on before page navigation title (files icon before page title Welcome in screenshot 1)
                     ]
                 ]
             );
@@ -181,16 +181,16 @@ This plugin is developed using:
                 'hooks'   => [
                     'title'     => __( 'Hooks/Filters', 'tws-core' ),
                     'tab_title' => __( 'Hooks & Filters', 'tws-core' ),
-                    'callback'  => function() { if( file_exists( HZFEX_Setting_Framework_Path. 'templates/contents/hooks-filters.php' ) ) include_once HZFEX_Setting_Framework_Path. 'templates/contents/hooks-filters.php'; }, // callback can be used this way also
+                    'callback'  => function() { if( file_exists( HZFEX_SETTING_PATH. 'templates/contents/hooks-filters.php' ) ) include_once HZFEX_SETTING_PATH. 'templates/contents/hooks-filters.php'; }, // callback can be used this way also
                 ],
                 'recommendation' => [
                     'title'      => __( 'Recommendation', 'tws-core' ),
                     'tab_title'  => __( 'Recommended Setup', 'tws-core' ),
-                    'callback'   => function() { if( file_exists( HZFEX_Setting_Framework_Path . 'templates/contents/recommendations.php' ) ) include_once HZFEX_Setting_Framework_Path . 'templates/contents/recommendations.php'; },
+                    'callback'   => function() { if( file_exists( HZFEX_SETTING_PATH . 'templates/contents/recommendations.php' ) ) include_once HZFEX_SETTING_PATH . 'templates/contents/recommendations.php'; },
                 ],
                 'tws_mixed_section' => [
                     'title'         => __( 'This title is only visible when fields are set.', 'tws-core' ), // only shows when "fields" are set.
-                    'tab_title'     => __( 'Ready to Go?', 'tws-core' ), 
+                    'tab_title'     => __( 'Ready to Go?', 'tws-core' ),
                     'desc'          => sprintf( '<div>%1$s</div><div><small><em>%2$s <code>templates/with-fields.php</code></em></small></div>',
                     __( 'This description is only visible when fields are set.', 'tws-core' ),
                     __( 'Enabling the switch below (actually it is a checkbox field type with style customization) will instantiate another child class on file', 'tws-core' ),
@@ -215,7 +215,7 @@ This plugin is developed using:
          * Sets content for "Getting Started" section in page "Welcome".
          */
         public function welcome_callback() {
-            if( file_exists( HZFEX_Setting_Framework_Path. 'templates/contents/welcome.php' ) ) include_once HZFEX_Setting_Framework_Path. 'templates/contents/welcome.php';
+            if( file_exists( HZFEX_SETTING_PATH. 'templates/contents/welcome.php' ) ) include_once HZFEX_SETTING_PATH. 'templates/contents/welcome.php';
         }
     }
 
@@ -248,10 +248,10 @@ This plugin is developed using:
     ```php
     <?php
 
-    namespace TheWebSolver\Plugin\Core\Framework;
+    namespace TheWebSolver\Core\Setting;
 
-    // use TheWebSolver\Plugin\Core\Framework\Settings_API; // uncomment this if you are not using above namespace.
-    
+    // use TheWebSolver\Core\Setting\Settings_API; // uncomment this if you are not using above namespace.
+
     $enabled = Settings_API::get_option( 'tws_enable_fields', 'tws_mixed_section', 'off' );
     ```
 
@@ -259,7 +259,7 @@ This plugin is developed using:
 <small>[Top↑](#table-of-contents)</small>
 
 - For debugging purpose, you can define debug constant to `true`.
-    
+
     On file [tws-setting-framework.php](https://github.com/TheWebSolver/tws-setting-framework/tree/master/tws-setting-framework.php) at around **_line 32_**, change contstant value from `false` to `true`.  For visual representation, see screenshot 6 below.
 
     ```php
@@ -267,7 +267,7 @@ This plugin is developed using:
     ```
 
     >For example, once set to `true`, it will display sections and fields set at child-class [without-fields.php](https://github.com/TheWebSolver/tws-setting-framework/tree/master/templates/without-fields.php) from:
-    
+
     ```php
     protected function sections();
     ```
