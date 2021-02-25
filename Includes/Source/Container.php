@@ -235,9 +235,6 @@ class Container {
 		// Create Settings API instance.
 		$this->setting = new Options();
 
-		// Gets Setting Fields.
-		require_once HZFEX_SETTING_PATH . 'setting/Fields.php';
-
 		// Hooks on each menu/submenu page load.
 		add_action( 'load-' . $this->hook_suffix, array( $this, 'load' ) );
 
@@ -272,11 +269,16 @@ class Container {
 	 * @since 1.0
 	 */
 	public function load() {
+		// Gets Setting Fields.
+		require_once __DIR__ . '/Fields.php';
+
 		// enqueues styles and scripts.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
 		/**
 		 * WPHOOK: Action -> Fires after loading of each option page.
+		 *
+		 * @param $this Container Object.
 		 *
 		 * @since 2.0 Changed tag name.
 		 */
@@ -295,16 +297,28 @@ class Container {
 		wp_enqueue_script( 'wp-color-picker' );
 		wp_enqueue_script( 'jquery' );
 
-		// Registers setting page stylesheet.
-		wp_enqueue_style( 'hzfex_setting_page_style', HZFEX_SETTING_URL . 'assets/style.css', array(), HZFEX_SETTING_VERSION );
-
-		if ( ! wp_script_is( 'hzfex_select2', 'enqueued' ) ) {
-			// Register select2 plugin scripts.
-			wp_enqueue_script( 'hzfex_select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js', array( 'jquery' ), '4.0.12', true );
+		if ( ! wp_script_is( 'hzfex_admin_style', 'registered' ) ) {
+			// Registers setting page stylesheet.
+			wp_enqueue_style( 'hzfex_setting_page_style', HZFEX_SETTING_URL . 'assets/style.css', array(), HZFEX_SETTING_VERSION );
 		}
-		if ( ! wp_style_is( 'hzfex_select2_style', 'enqueued' ) ) {
-			// Register styles.
-			wp_enqueue_style( 'hzfex_select2_style', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css', array(), '4.0.12' );
+
+		// Verify if WooCommerce Select2 already exists.
+		if ( ! wp_script_is( 'wc-enhanced-select-js', 'registered' ) ) {
+			if ( ! wp_script_is( 'hzfex_select2', 'registered' ) ) {
+				// Register select2 plugin scripts.
+				wp_register_script( 'hzfex_select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js', array( 'jquery' ), '4.0.12', true );
+			}
+			if ( ! wp_style_is( 'hzfex_select2_style', 'registered' ) ) {
+				// Register styles.
+				wp_register_style( 'hzfex_select2_style', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css', array(), '4.0.12' );
+			}
+
+			// Only enqueue if no WooCommerce script found, or registered handle doesn't already exist.
+			$field_types = array_column( $this->has_fields(), 'type' );
+			if ( in_array( 'select', $field_types, true ) || in_array( 'multi-select', $field_types, true ) ) {
+				wp_enqueue_script( 'hzfex_select2' );
+				wp_enqueue_style( 'hzfex_select2_style' );
+			}
 		}
 	}
 

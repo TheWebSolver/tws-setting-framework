@@ -94,13 +94,37 @@ function setting (
 		'default'    => 'off',
 		'priority'   =>15,
 	) )
-	->add_field( 'new_field_test_three', 'hooks_new', array(
-		'label'      => 'Interface Field Label',
-		'type'       => 'text',
-		'class'      => 'widefat',
-		'default'    => 'This is default text.',
-		'sanitize_callback' => 'sanitize_text_field',
+	->add_field( 'radio_field_id', 'new_api_section', array(
+		'label'              => __( 'Radio button', 'tws-core' ),
+		'desc'               => __( 'Select one of the radio button', 'tws-core' ),
+		'type'               => 'radio',
+		'default'            => 'radio_three',
+		'class'              => 'hz_card_control',
+		'options'            => array(
+			'radio_one'      => __( 'Radio One', 'tws-core' ),
+			'radio_two'      => __( 'Radio Two', 'tws-core' ),
+			'radio_three'    => __( 'Radio Three', 'tws-core' ),
+		),
 	) )
+	->add_field( 'select_field_id', 'new_api_section', array(
+		'label'              => __( 'Select dropdown field', 'tws-core' ),
+		'desc'               => __( 'Select any option from dropdown', 'tws-core' ),
+		'type'               => 'select',
+		'default'            => 'select_two',
+		'class'              => 'widefat hz_select_control',
+		'options'            => array(
+			'select_one'      => __( 'Select One', 'tws-core' ),
+			'select_two'      => __( 'Select Two', 'tws-core' ),
+			'select_three'    => __( 'Select Three', 'tws-core' ),
+		),
+	) )
+	// ->add_field( 'new_field_test_three', 'hooks_new', array(
+	// 	'label'      => 'Interface Field Label',
+	// 	'type'       => 'text',
+	// 	'class'      => 'widefat',
+	// 	'default'    => 'This is default text.',
+	// 	'sanitize_callback' => 'sanitize_text_field',
+	// ) )
     // ->set_sections( $sections )
     ->set_capability( $capability )
     ->set_menu();

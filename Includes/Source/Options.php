@@ -57,8 +57,9 @@ final class Options {
 	 * @var array
 	 *
 	 * @since 1.0
+	 * @static
 	 */
-	private $field_types = array( 'text', 'number', 'checkbox', 'multi_checkbox', 'radio', 'select', 'multi_select', 'textarea', 'wysiwyg', 'file', 'color', 'pages', 'password', 'categories' );
+	private static $field_types = array( 'text', 'number', 'checkbox', 'multi_checkbox', 'radio', 'select', 'multi_select', 'textarea', 'wysiwyg', 'file', 'color', 'pages', 'password', 'categories' );
 
 	/**
 	 * Sets settings sections.
@@ -264,15 +265,9 @@ final class Options {
 				radio_field( $field, $value, $desc );
 				break;
 			case 'select':
-				// only enqueue select2 on pages with select field.
-				wp_enqueue_script( 'hzfex_select2' );
-				wp_enqueue_style( 'hzfex_select2_style' );
 				select_field( $field, $value, $desc );
 				break;
 			case 'multi_select':
-				// only enqueue select2 on pages with multi-select field.
-				wp_enqueue_script( 'hzfex_select2' );
-				wp_enqueue_style( 'hzfex_select2_style' );
 				multi_select_field( $field, $value, $desc );
 				break;
 			case 'textarea':
@@ -403,6 +398,7 @@ final class Options {
 	 * @since 1.0
 	 */
 	public function show_navigation() {
+		ob_start();
 		$html = '<div class="nav-tab-wrapper"><div class="hz_setting_nav">';
 
 		foreach ( $this->sections as $tab ) {
@@ -417,6 +413,7 @@ final class Options {
 		$html .= '</div></div>';
 
 		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		ob_get_contents();
 	}
 
 	/**
@@ -499,7 +496,7 @@ final class Options {
 		do_action( "hzfex_after_{$section['id']}_fields", $section );
 
 		// Quick check if unsupported fields are only set.
-		if ( $this->has_input_field( $section['fields'] ) ) {
+		if ( self::has_input_field( $section['fields'] ) ) {
 			echo '<div class="hz_setting_submit">';
 				echo submit_button(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo '</div>';
@@ -517,12 +514,13 @@ final class Options {
 	 * @return bool True if any one field type matches, false otherwise.
 	 *
 	 * @since 1.0
+	 * @static
 	 */
-	private function has_input_field( array $fields ): bool {
+	public static function has_input_field( array $fields ): bool {
 		// Get field type from fields.
 		$fields = array_column( $fields, 'type' );
 
-		return array_intersect( $this->field_types, $fields ) ? true : false;
+		return array_intersect( self::$field_types, $fields ) ? true : false;
 	}
 
 	/**

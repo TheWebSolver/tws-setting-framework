@@ -119,15 +119,6 @@ final class Plugin {
 		require_once __DIR__ . '/Source/Options.php';
 		require_once __DIR__ . '/Source/Container.php';
 
-		include_once HZFEX_SETTING_PATH . 'setting/Page_Interface.php';
-		include_once HZFEX_SETTING_PATH . 'setting/Page.php';
-		include_once HZFEX_SETTING_PATH . 'setting/Test.php';
-
-		require_once __DIR__ . '/API/API.php';
-
-		// Example files. delete if not needed.
-		// $this->include_examples(); //phpcs:ignore -- Valid comment OK.
-
 		// Register this plugin as extension to TWS Core.
 		// Using inside hook so it always fire after core plugin is loaded.
 		add_action( 'hzfex_core_loaded', array( $this, 'register' ) );
@@ -135,6 +126,13 @@ final class Plugin {
 		// Add settings menu and remove submenu created by the main menu.
 		add_action( 'admin_menu', array( $this, 'add_menu' ) );
 		add_action( 'admin_menu', array( $this, 'remove_main_submenu' ), 999 );
+
+		/**
+		 * Example files. delete if not needed. Uncomment to load example files.
+		 *
+		 * @deprecated 2.0
+		 */
+		// include_once HZFEX_SETTING_PATH . 'templates/init.php'; //phpcs:ignore -- Valid comment OK.
 	}
 
 	/**
@@ -193,8 +191,6 @@ final class Plugin {
 	 * @return bool True if already exists, else false.
 	 *
 	 * @since 1.0
-	 *
-	 * @access public
 	 */
 	public function menu_exists( $slug ) {
 		global $menu;
@@ -208,26 +204,6 @@ final class Plugin {
 	 * Private constructor to prevent direct instantiation.
 	 *
 	 * @since 2.0
-	 *
-	 * @access private
 	 */
 	private function __construct() {}
-
-	/**
-	 * Settings page examples.
-	 *
-	 * ### NOTE: !!! MAYBE REMOVE EXAMPLE FILES AND CODES??? !!!
-	 *
-	 * Included files contain example codes to create submenu
-	 * pages inside main menu with slug as `HZFEX_SETTING_MENU`.
-	 * If you want to create your own menu/submenu pages, delete this.
-	 * HINT: don't only remove this include file here,
-	 * delete **_templates_** folder also so no messy leftovers.
-	 *
-	 * @return void
-	 */
-	private function include_examples() {
-		include_once HZFEX_SETTING_PATH . 'templates/without-fields.php';
-		include_once HZFEX_SETTING_PATH . 'templates/with-fields.php';
-	}
 }

@@ -1,0 +1,5 @@
+# Ignore example templates folder.
+/templates/
+
+# igonre v1 setting files.
+/setting/
