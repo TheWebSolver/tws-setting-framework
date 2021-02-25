@@ -1,8 +1,8 @@
 <?php // phpcs:ignore WordPress.NamingConventions
 /**
- * TheWebSolver\Core\Setting\Option class
+ * Creates WordPress Admin Menu page with settings and/or contents.
  *
- * @package TheWebSolver\Core\Setting_Framework\Option\Class\API
+ * @package TheWebSolver\Core\Setting_Framework\Class\API
  * @version 2.0
  *
  * -----------------------------------
@@ -24,12 +24,12 @@ namespace TheWebSolver\Core\Setting;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Setting Page class.
+ * Creates WordPress Admin Menu page with settings and/or contents.
  *
- * @class TheWebSolver\Core\Setting\Options
+ * @class TheWebSolver\Core\Setting\Container
  * @api
  */
-class Option {
+class Container {
 	/**
 	 * WordPress Core Settings API class instance.
 	 *
@@ -78,15 +78,6 @@ class Option {
 	 * @since 2.0
 	 */
 	protected $sections = array();
-
-	/**
-	 * The WordPress Menu Page Sections.
-	 *
-	 * @var array
-	 *
-	 * @since 2.0
-	 */
-	protected $all_sections = array();
 
 	/**
 	 * The WordPress Menu Page Section's fields.
@@ -144,11 +135,11 @@ class Option {
 	 * * @type `string` `icon`
 	 * * @type `int`    `position`.
 	 *
-	 * @return Option
+	 * @return Container
 	 *
 	 * @since 2.0
 	 */
-	public function set_page( array $args = array() ): Option {
+	public function set_page( array $args = array() ): Container {
 		$this->page_args = $args;
 		return $this;
 	}
@@ -160,16 +151,15 @@ class Option {
 	 *
 	 * @since 2.0
 	 */
-	public function set_capability( string $capability = 'manage_options' ): Option {
+	public function set_capability( string $capability = 'manage_options' ): Container {
 		$this->capability = $capability;
 		return $this;
 	}
 
 	/**
-	 * Sets setting page section.
+	 * Adds setting page sections.
 	 *
-	 * Section must be added in key/value pair.\
-	 * The key will be the section ID and values will be section args.
+	 * This can be used multiple times to set different sections.
 	 *
 	 * @param string $id   The setting page section ID.
 	 * @param array  $args Setting page section args.
@@ -181,21 +171,25 @@ class Option {
 	 * * @type `string` `capability`  - User's capability to access section.
 	 * * @type `callable` `callback`  - Section callback function to display contents other than fields below section title.
 	 */
-	public function add_section( string $id, array $args ): Option {
-		$this->all_sections[ $id ] = $args;
+	public function add_section( string $id, array $args ): Container {
+		$this->sections[ $id ] = $args;
 		return $this;
 	}
 
 	/**
-	 * Sets setting page section.
+	 * Sets setting page sections.
 	 *
-	 * This will set the section data and override anything added with.\
-	 * {@see @method `Option::add_section()`}
+	 * NOTE: This will set sections that overrides anything added with
+	 * {@see @method `Container::add_section()`}.\
+	 * Useful when only need to add a single section.
 	 *
 	 * @param array $args Setting page section args.
-	 * @return Option
+	 *
+	 * @return Container
+	 *
+	 * @since 2.0
 	 */
-	public function set_sections( array $args ): Option {
+	public function set_sections( array $args ): Container {
 		$this->sections = $args;
 		return $this;
 	}
@@ -248,17 +242,17 @@ class Option {
 		add_action( 'load-' . $this->hook_suffix, array( $this, 'load' ) );
 
 		/**
-		 * Filters user capability to manage each submenu page.
+		 * Filters user capability to manage each section of the page.
 		 *
 		 * Works in this order:
 		 * - Checks if submenu page has sections.
 		 * - Loops through all sections to get the page ID.
 		 * - Adds filter for changing user capability to view/save/update options.
 		 *
-		 * @since 2.0 Used inline function to set capability.
+		 * @since 2.0 Used closure (anonymous) function to set capability.
 		 */
-		if ( $this->valid_sections() ) {
-			foreach ( $this->valid_sections() as $section ) {
+		if ( $this->is_valid_content() ) {
+			foreach ( $this->get_sections() as $section ) {
 				add_filter(
 					"option_page_capability_{$section['id']}",
 					function( $cap ) use ( $section ) {
@@ -342,7 +336,7 @@ class Option {
 				$section_count = $show_nav ? 0 : 1;
 
 				// Show section tabs if have atleast two sections.
-				if ( count( $this->valid_sections() ) > $section_count ) {
+				if ( count( $this->sections ) > $section_count ) {
 					$this->setting->show_navigation();
 				}
 
@@ -364,26 +358,9 @@ class Option {
 	 */
 	public function add_page_contents() {
 		// Bail early if no section defined.
-		if ( false === $this->valid_sections() ) {
+		if ( ! $this->is_valid_content() ) {
 			return;
 		}
-
-		?>
-		<style>
-			#adminmenu, #adminmenu .wp-submenu, #adminmenuback, #adminmenuwrap {
-				width: 0 !important;
-			}
-		</style>
-		<?php
-
-		// phpcs:disable
-		// var_dump( $this->fields );
-		// var_dump( $this->all_sections );
-		// var_dump( $this->validate_fields() );
-		// echo '<pre>'; print_r( $this->get_sections() ); echo '</pre>';
-		// echo '<pre>'; print_r( $this->valid_fields() ); echo '</pre>';
-		// echo '<pre>'; print_r( $this->get_valid_fields() ); echo '</pre>';
-		// phpcs:enable
 
 		// Sets sections, fields for Settings API and register.
 		$this->setting
@@ -395,78 +372,11 @@ class Option {
 	/**
 	 * Gets valid fields.
 	 *
-	 * @return void
+	 * @return array
 	 */
 	private function get_valid_fields() {
 		foreach ( $this->get_sections() as $key => $data ) {
 			$fields[ $key ] = $data['fields'];
-		}
-		return $fields;
-	}
-
-	/**
-	 * Sets fields data after validation.
-	 *
-	 * @return array Fields in an array.
-	 *
-	 * @since 1.0
-	 * @since 2.0 code revised
-	 */
-	private function valid_fields() {
-		// Bail early if no section defined.
-		if ( false === $this->valid_sections() ) {
-			return false;
-		}
-
-		$fields = array();
-
-		foreach ( $this->valid_sections() as $key => $data ) {
-			// Only continue if section has fields.
-			if ( false === $data['fields'] ) {
-				continue;
-			}
-
-			/**
-			 * WPHOOK Filter - Extend each setting section fields
-			 *
-			 * NOTE: Use API instead.
-			 *
-			 * - Highly recommended to add all fields from API.
-			 * - Useful to add new fields to an already existing section.
-			 *
-			 * @param string $key -> the section key where field should be added.
-			 * @param array $data['fields'] -> an array of fields that belong to that section.
-			 *
-			 * @example If $key is set as `test_section`:
-			 *
-			 * add_filter( "hzfex_setting_test_section_fields", "add_new_fields" );
-			 * function add_new_fields( $fields ) {
-			 *      $fields['new_test_field'] = [
-			 *          'label'             => 'New Test Field',
-			 *          'desc'              => 'New Test Description',
-			 *          'placeholder'       => 'Placeholder.... anything....',
-			 *          'type'              => 'text',
-			 *          'sanitize_callback  => 'sanitize_text_field',
-			 *          'priority'          => 5
-			 *      ];
-			 *      return $fields; // this is required to return back all fields.
-			 * }
-			 */
-			$fields[ $key ] = apply_filters( "hzfex_setting_{$key}_fields", $data['fields'] );
-
-			/**
-			 * Sorts fields by priority, if set, inside each section.
-			 *
-			 * NOTE: Plugin specific feature
-			 * - This feature is only available in plugin and not in this framework.
-			 *
-			 * @link coming soon!!!
-			 *
-			 * @uses    sort_by_priority() Sorts array data by priority
-			 */
-			if ( function_exists( '\TheWebSolver\Core\sort_by_priority' ) ) {
-				uasort( $fields[ $key ], '\TheWebSolver\Core\sort_by_priority' );
-			}
 		}
 		return $fields;
 	}
@@ -479,29 +389,30 @@ class Option {
 	 * @param array  $args       The field args.
 	 *
 	 * Required Args:
-	 * * @type `string` `id`                  - The field ID.
+	 * * @type `string`   `id`                    - The field ID.
 	 *
 	 * Common args:
-	 * * @type `string` `label`               - The field display name.
-	 * * @type `string` `description`         - The field description to display.
-	 * * @type `string` `placeholder`         - The field placeholder value.
-	 * * @type `mixed`  `default`             - The field default value.
-	 * * @type `string` `type`                - The field type attribute.
-	 * * @type `string` `class`               - The field class attribute.
-	 * * @type `callable` `sanitize_callabck` - The callback function for field sanitization.
+	 * * @type `string`   `label`               - The field display name.
+	 * * @type `string`   `description`         - The field description to display.
+	 * * @type `string`   `placeholder`         - The field placeholder value.
+	 * * @type `mixed`    `default`             - The field default value.
+	 * * @type `string`   `type`                - The field type attribute.
+	 * * @type `string`   `class`               - The field class attribute.
+	 * * @type `callable` `sanitize_callabck`   - The callback function for field sanitization.
+	 * * @type `int`      `priority`            - The field's position priority.
 	 *
 	 * Number field:
-	 * * @type `int` `min`                    - Minimum number value.
-	 * * @type `int` `max`                    - Maximum number value.
-	 * * @type `int` `step`                   - Step of increment.
+	 * * @type `int`      `min`                 - Minimum number value.
+	 * * @type `int`      `max`                 - Maximum number value.
+	 * * @type `int`      `step`                - Step of increment.
 	 *
 	 * Radio & Select/Multi-select field:
-	 * * @type `array` `options`              - Field options.
+	 * * @type `array`    `options`             - Field options.
 	 *
 	 * Textarea field:
-	 * * @type `int` `rows` - The number of rows to define.
+	 * * @type `int`      `rows`                - The number of rows to define.
 	 *
-	 * @return Option
+	 * @return Container
 	 */
 	public function add_field( string $id, string $section_id, array $args ) {
 		// Set fields property.
@@ -512,121 +423,104 @@ class Option {
 	}
 
 	/**
+	 * Validates if content is a valid content.
+	 *
+	 * @return bool
+	 *
+	 * @since 2.0
+	 */
+	private function is_valid_content(): bool {
+		return 0 < count( $this->sections ) && 0 < count( $this->has_fields() );
+	}
+
+	/**
+	 * Prepares sections and it's data.
+	 *
+	 * @return array
+	 *
+	 * @since 2.0
+	 */
+	private function get_sections(): array {
+		$sections = array();
+
+		// Prepare section data.
+		foreach ( $this->sections as $key => $args ) {
+			$cap = isset( $args['capability'] ) && ! empty( $args['capability'] ) ? $args['capability'] : $this->capability;
+
+			// Only continue if current user has assigned capability.
+			if ( ! array_key_exists( $cap, wp_get_current_user()->allcaps ) ) {
+				continue;
+			}
+
+			$fields = array_filter(
+				$this->has_fields(),
+				function( $field ) use ( $key ) {
+					return $field['section_id'] === $key;
+				}
+			);
+
+			$sections[ $key ] = array(
+				'id'          => $key,
+				'capability'  => $cap,
+				'title'       => isset( $args['title'] ) && ! empty( $args['title'] ) ? $args['title'] : '',
+				'description' => isset( $args['desc'] ) && ! empty( $args['desc'] ) ? $args['desc'] : '',
+				'callback'    => isset( $args['callback'] ) && ! empty( $args['callback'] ) ? $args['callback'] : '',
+				'tab_title'   => isset( $args['tab_title'] ) && ! empty( $args['tab_title'] ) ? $args['tab_title'] : $args['title'],
+				'fields'      => $fields,
+			);
+		}
+
+		return $sections;
+	}
+
+	/**
 	 * Sets fields data after validation.
 	 *
 	 * @return array Fields in an array.
 	 *
 	 * @since 2.0
 	 */
-	private function validate_fields() {
-		$fields = array();
+	private function has_fields(): array {
+		// Filter out fields that doesn't belong to any section.
+		$fields = array_filter( $this->fields, array( $this, 'is_section_set' ) );
 
-		// Bail early if no section defined.
-		if ( 0 === count( $this->fields ) ) {
-			return $fields;
-		}
-
-		$fields = array_filter(
-			$this->fields,
-			function( $field ) {
-				return isset( $this->all_sections[ $field['section_id'] ] );
-			}
-		);
+		uasort( $fields, array( $this, 'sort_fields' ) );
 
 		return $fields;
 	}
 
 	/**
-	 * Prepares sections and it's data as content to display on menu page.
+	 * Checks if field has section ID set.
 	 *
-	 * @return array
+	 * @param array $field The field to check for.
+	 *
+	 * @return bool
 	 *
 	 * @since 2.0
 	 */
-	private function get_sections() {
-		$sections = array();
-
-		// phpcs:disable
-
-		// Bail if no section data.
-		if ( 0 === count( $this->all_sections ) ) {
-			return $sections;
-		}
-
-		// Prepare section data.
-		foreach ( $this->all_sections as $key => $s ) {
-			$cap = isset( $s['capability'] ) && ! empty( $s['capability'] ) ? $s['capability'] : $this->capability;
-
-			// Only continue if current user has assigned capability.
-			if ( ! array_key_exists( $cap, wp_get_current_user()->allcaps ) ) {
-				continue;
-			}
-
-			$sections[ $key ] = array(
-				'id'         => $key,
-				'capability' => $cap,
-				'title'      => isset( $s['title'] ) && ! empty( $s['title'] ) ? $s['title'] : '',
-				'desc'       => isset( $s['desc'] ) && ! empty( $s['desc'] ) ? $s['desc'] : '',
-				'callback'   => isset( $s['callback'] ) && ! empty( $s['callback'] ) ? $s['callback'] : '',
-				'tab_title'  => isset( $s['tab_title'] ) && ! empty( $s['tab_title'] ) ? $s['tab_title'] : $s['title'],
-				'fields'     => array_filter( $this->validate_fields(), function( $field ) use ( $key ) {
-					return $field['section_id'] === $key;
-				} ),
-			);
-			// phpcs:enable
-		}
-
-		return $sections;
+	private function is_section_set( $field ): bool {
+		return isset( $this->sections[ $field['section_id'] ] );
 	}
 
 	/**
-	 * Sets sections data after validation.
+	 * Sorts field position by it's priority.
 	 *
-	 * @return array/false Sections in an array, false if no section data
+	 * @param array $first The first field to compare.
+	 * @param array $last The last field to compare.
 	 *
-	 * @since 1.0
+	 * @return int
+	 *
+	 * @since 2.0
 	 */
-	private function valid_sections() {
-		// Bail if no section data.
-		if ( false === $this->has_section() ) {
-			return false;
+	private function sort_fields( $first, $last ) {
+		if ( ! isset( $first['priority'], $last['priority'] ) ) {
+			return 0;
 		}
 
-		$sections = array();
-
-		// Prepare section data.
-		foreach ( $this->has_section() as $key => $s ) {
-			$cap = isset( $s['capability'] ) && ! empty( $s['capability'] ) ? $s['capability'] : $this->capability;
-
-			// Only continue if current user has assigned capability.
-			if ( ! array_key_exists( $cap, wp_get_current_user()->allcaps ) ) {
-				continue;
-			}
-
-			$sections[ $key ] = array(
-				'id'         => $key,
-				'capability' => $cap,
-				'title'      => isset( $s['title'] ) && ! empty( $s['title'] ) ? $s['title'] : '',
-				'desc'       => isset( $s['desc'] ) && ! empty( $s['desc'] ) ? $s['desc'] : '',
-				'callback'   => isset( $s['callback'] ) && ! empty( $s['callback'] ) ? $s['callback'] : '',
-				'tab_title'  => isset( $s['tab_title'] ) && ! empty( $s['tab_title'] ) ? $s['tab_title'] : $s['title'],
-				'fields'     => isset( $s['fields'] ) && ! empty( $s['fields'] ) ? $s['fields'] : false,
-			);
+		if ( $first['priority'] === $last['priority'] ) {
+			return 0;
 		}
-		return $sections;
-	}
 
-	/**
-	 * Checks if section has data.
-	 *
-	 * @return array/false array of sections data if defined, else false
-	 *
-	 * @since 1.0
-	 * @since 2.0 Changed method name and code review.
-	 *
-	 * @access private
-	 */
-	private function has_section() {
-		return count( $this->sections ) < 1 ? false : $this->sections;
+		return $first['priority'] < $last['priority'] ? -1 : 1;
 	}
 }
