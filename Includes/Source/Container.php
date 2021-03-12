@@ -140,7 +140,29 @@ class Container {
 	 * @since 2.0
 	 */
 	public function set_page( array $args = array() ): Container {
-		$this->page_args = $args;
+		// Prepare vars from args.
+		$page_title = ucwords( strtolower( str_replace( array( '_', '-' ), ' ', $this->id ) ) );
+		$menu_slug  = isset( $args['menu_slug'] ) && ! empty( $args['menu_slug'] ) ? $args['menu_slug'] : $this->id;
+		$page_slug  = isset( $args['page_slug'] ) && ! empty( $args['page_slug'] ) ? $args['page_slug'] : $menu_slug;
+		$page_title = isset( $args['page_title'] ) && ! empty( $args['page_title'] ) ? $args['page_title'] : $page_title;
+		$menu_title = isset( $args['menu_title'] ) && ! empty( $args['menu_title'] ) ? $args['menu_title'] : $page_title;
+		$position   = isset( $args['position'] ) && ! empty( $args['position'] ) ? $args['position'] : 99;
+		$icon       = isset( $args['icon'] ) && ! empty( $args['icon'] ) ? $args['icon'] : '';
+
+		$this->hook_priority = $this->parent_slug ? 999 : 10;
+
+		// Prepare menu page args.
+		$page = array(
+			'page_title' => $page_title,
+			'menu_title' => $menu_title,
+			'menu_slug'  => $menu_slug,
+			'page_slug'  => $page_slug,
+			'position'   => $position,
+			'icon'       => $icon,
+		);
+
+		$this->page_args = $page;
+
 		return $this;
 	}
 
@@ -389,6 +411,7 @@ class Container {
 	 * @return array
 	 */
 	private function get_valid_fields() {
+		$fields = array();
 		foreach ( $this->get_sections() as $key => $data ) {
 			$fields[ $key ] = $data['fields'];
 		}
