@@ -615,7 +615,10 @@ final class Options {
 					$('.hz_select_control .hz_select_control').select2({
 						width: '100%',
 						placeholder: 'Select Options',
-						allowClear: true,
+						allowClear: false,
+						dropdownParent: $('.hz_select_control td'),
+						minimumResultsForSearch: 5,
+						closeOnSelect: true
 					});
 				}
 
