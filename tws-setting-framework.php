@@ -30,21 +30,25 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
+use TheWebSolver\Core\Setting\Plugin;
+
 if ( ! defined( 'HZFEX_SETTING_FILE' ) ) {
 	define( 'HZFEX_SETTING_FILE', __FILE__ );
 }
 
 require_once __DIR__ . '/Includes/Setting.php';
 
-/**
- * Main function to instantiate HZFEX_Setting_Framework class.
- *
- * @return TheWebSolver\Core\Setting\Plugin
- *
- * @since 2.0
- */
-function tws_setting(): TheWebSolver\Core\Setting\Plugin {
-	return TheWebSolver\Core\Setting\Plugin::boot();
+if ( ! function_exists( 'tws_setting' ) ) {
+	/**
+	 * Main function to instantiate HZFEX_Setting_Framework class.
+	 *
+	 * @return Plugin
+	 *
+	 * @since 2.0
+	 */
+	function tws_setting(): Plugin {
+		return Plugin::boot();
+	}
 }
 
 // Initializes the plugin.
