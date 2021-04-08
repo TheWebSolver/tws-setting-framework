@@ -104,7 +104,7 @@ class Container {
 	 *
 	 * @since 2.0
 	 */
-	protected $hook_suffix;
+	public $hook_suffix;
 
 	/**
 	 * Constructor.
