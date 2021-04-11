@@ -5,6 +5,7 @@
  * @package TheWebSolver\Core\Setting_Framework\Class\API
  * @since 2.0
  * @version 2.1 Deprecated "Container::set_sections" method.
+ * @version 2.1 Added getters for id, hook suffix, capability and page title.
  *
  * -----------------------------------
  * DEVELOPED-MAINTAINED-SUPPPORTED BY
