@@ -3,7 +3,8 @@
  * Creates WordPress Admin Menu page with settings and/or contents.
  *
  * @package TheWebSolver\Core\Setting_Framework\Class\API
- * @version 2.0
+ * @since 2.0
+ * @version 2.1 Deprecated "Container::set_sections" method.
  *
  * -----------------------------------
  * DEVELOPED-MAINTAINED-SUPPPORTED BY
@@ -19,6 +20,8 @@
  */
 
 namespace TheWebSolver\Core\Setting;
+
+use WP_Error;
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
@@ -104,7 +107,7 @@ class Container {
 	 *
 	 * @since 2.0
 	 */
-	public $hook_suffix;
+	protected $hook_suffix;
 
 	/**
 	 * Constructor.
@@ -113,12 +116,13 @@ class Container {
 	 * @param string $parent_slug The parent menu slug.
 	 *
 	 * @since 2.0
+	 * @since 2.1 Possible to set empty parent slug.
 	 *
 	 * @access public
 	 */
 	public function __construct( string $id, string $parent_slug = '' ) {
 		$this->id          = $id;
-		$this->parent_slug = '' !== $parent_slug ? $parent_slug : HZFEX_SETTING_MENU;
+		$this->parent_slug = $parent_slug;
 	}
 
 	/**
@@ -127,7 +131,6 @@ class Container {
 	 * @see function: `add_menu_page()`
 	 *
 	 * @param array $args Menu args.
-	 * * @type `string` `parent_slug` - The parent menu slug, if this is a submenu page.
 	 * * @type `string` `menu_slug`   - The menu page slug.
 	 * * @type `string` `page_slug`   - The setting page slug for URL.
 	 * * @type `string` `page_title`  - The menu page title.
@@ -138,6 +141,7 @@ class Container {
 	 * @return Container
 	 *
 	 * @since 2.0
+	 * @since 2.1 `menu_title` key can be empty.
 	 */
 	public function set_page( array $args = array() ): Container {
 		// Prepare vars from args.
@@ -145,7 +149,7 @@ class Container {
 		$menu_slug  = isset( $args['menu_slug'] ) && ! empty( $args['menu_slug'] ) ? $args['menu_slug'] : $this->id;
 		$page_slug  = isset( $args['page_slug'] ) && ! empty( $args['page_slug'] ) ? $args['page_slug'] : $menu_slug;
 		$page_title = isset( $args['page_title'] ) && ! empty( $args['page_title'] ) ? $args['page_title'] : $page_title;
-		$menu_title = isset( $args['menu_title'] ) && ! empty( $args['menu_title'] ) ? $args['menu_title'] : $page_title;
+		$menu_title = isset( $args['menu_title'] ) ? $args['menu_title'] : $page_title;
 		$position   = isset( $args['position'] ) && ! empty( $args['position'] ) ? $args['position'] : 99;
 		$icon       = isset( $args['icon'] ) && ! empty( $args['icon'] ) ? $args['icon'] : '';
 
@@ -205,14 +209,48 @@ class Container {
 	 * {@see @method `Container::add_section()`}.\
 	 * Useful when only need to add a single section.
 	 *
+	 * @deprecated 2.1
+	 *
 	 * @param array $args Setting page section args.
 	 *
 	 * @return Container
 	 *
+	 * @todo remove on next version.
 	 * @since 2.0
 	 */
 	public function set_sections( array $args ): Container {
-		$this->sections = $args;
+		_deprecated_function( __METHOD__, '2.1', esc_html( get_class() ) . '::add_sections' );
+
+		$error = new WP_Error(
+			'section_id_not_set',
+			sprintf(
+				'<h3><code>%1$s</code> %2$s</h3>%3$s',
+				__METHOD__,
+				__( 'method is deprecated. Use <b>"add_section"</b> method instead.', 'tws-setting' ),
+				__( '"id" key/value pair must be set in args when adding section using this method.', 'tws-setting' )
+			),
+			__( 'Section ID not set', 'tws-setting' )
+		);
+
+		$id = isset( $args['id'] ) && ! empty( $args['id'] ) ? $args['id'] : $error;
+
+		if ( is_wp_error( $id ) ) {
+			wp_die(
+				wp_kses(
+					$id->get_error_message(),
+					array(
+						'h3' => array(),
+						'b'  => array(),
+					)
+				),
+				esc_html( $id->get_error_data() )
+			);
+		}
+
+		// Clear id from args.
+		unset( $args['id'] );
+
+		$this->sections[ $id ] = $args;
 		return $this;
 	}
 
@@ -350,9 +388,25 @@ class Container {
 	 * @since 1.0
 	 */
 	public function load_page_content() {
+		/**
+		 * WPHOOK: Action -> fires before setting framework display.
+		 *
+		 * @param @string $id The current container ID.
+		 * @since 2.1
+		 */
+		do_action( 'hzfex_before_setting_page_framework', $this->id );
 		?>
 		<!-- HZFEX_Core Setting Framework API -->
 		<div id="hzfex_setting_framework" class="hz_min_container hz_flx">
+			<?php
+			/**
+			 * WPHOOK: Action -> fires before setting sections display.
+			 *
+			 * @param @string $id The current container ID.
+			 * @since 2.1
+			 */
+			do_action( 'hzfex_before_setting_page_section', $this->id );
+			?>
 			<!-- hz_setting_section -->
 			<div id="hz_setting_section" class="hz_lrg_content wrap">
 				<?php
@@ -381,6 +435,15 @@ class Container {
 				?>
 			</div>
 			<!-- #hz_setting_section -->
+			<?php
+			/**
+			 * WPHOOK: Action -> fires after setting sections display.
+			 *
+			 * @param @string $id The current container ID.
+			 * @since 2.1
+			 */
+			do_action( 'hzfex_after_setting_page_section', $this->id );
+			?>
 		</div>
 		<!-- HZFEX_Core Setting Framework API end -->
 		<?php
@@ -465,9 +528,10 @@ class Container {
 	 * @return bool
 	 *
 	 * @since 2.0
+	 * @since 2.1 Removed empty field check for showing section even if no fields.
 	 */
 	private function is_valid_content(): bool {
-		return 0 < count( $this->sections ) && 0 < count( $this->has_fields() );
+		return 0 < count( $this->sections );
 	}
 
 	/**
@@ -559,5 +623,49 @@ class Container {
 		}
 
 		return $first['priority'] < $last['priority'] ? -1 : 1;
+	}
+
+	/**
+	 * Gets the container id.
+	 *
+	 * @return string
+	 *
+	 * @since 2.1
+	 */
+	public function get_id() {
+		return $this->id;
+	}
+
+	/**
+	 * Gets page hook suffix.
+	 *
+	 * @return string
+	 *
+	 * @since 2.1
+	 */
+	public function get_suffix() {
+		return $this->hook_suffix;
+	}
+
+	/**
+	 * Gets the user capability who can assess the page.
+	 *
+	 * @return string
+	 *
+	 * @since 2.1
+	 */
+	public function get_cap() {
+		return $this->capability;
+	}
+
+	/**
+	 * Gets page title.
+	 *
+	 * @return string
+	 *
+	 * @since 2.1
+	 */
+	public function title() {
+		return $this->page_args['page_title'];
 	}
 }

@@ -40,7 +40,7 @@ final class Plugin {
 	 *
 	 * @since 2.0
 	 */
-	public $version = '2.0';
+	public $version = '2.1';
 
 	/**
 	 * Plugin args.
@@ -178,7 +178,7 @@ final class Plugin {
 	 * @since 2.0
 	 */
 	public function register() {
-		if ( function_exists( 'tws_core' ) ) {
+		if ( function_exists( '\tws_core' ) ) {
 			tws_core()->extensions()->register( $this->args );
 		}
 	}

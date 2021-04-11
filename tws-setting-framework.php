@@ -3,7 +3,7 @@
  * Plugin Name:       The Web Solver Setting Framework
  * Plugin URI:        https://github.com/TheWebSolver/tws-setting-framework
  * Description:       WordPress Settings (Options) API framework
- * Version:           2.0
+ * Version:           2.1
  * Author:            Shesh Ghimire
  * Author URI:        https://www.linkedin.com/in/sheshgh/
  * Requires at least: 5.3
