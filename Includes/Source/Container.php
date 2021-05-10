@@ -192,11 +192,11 @@ class Container {
 	 * @param array  $args Setting page section args.
 	 *
 	 * Required args:
-	 * * @type `string` `title`       - Section title.
-	 * * @type `string` `tab_title`   - Section tab title.
-	 * * @type `string` `description` - Section description.
-	 * * @type `string` `capability`  - User's capability to access section.
-	 * * @type `callable` `callback`  - Section callback function to display contents other than fields below section title.
+	 * * @type `string`   `title`      - Section title.
+	 * * @type `string`   `tab_title`  - Section tab title.
+	 * * @type `string`   `desc`       - Section description.
+	 * * @type `string`   `capability` - User's capability to access section.
+	 * * @type `callable` `callback`   - Section callback function to display contents other than fields below section title.
 	 */
 	public function add_section( string $id, array $args ): Container {
 		$this->sections[ $id ] = $args;
@@ -562,13 +562,13 @@ class Container {
 			);
 
 			$sections[ $key ] = array(
-				'id'          => $key,
-				'capability'  => $cap,
-				'title'       => isset( $args['title'] ) && ! empty( $args['title'] ) ? $args['title'] : '',
-				'description' => isset( $args['desc'] ) && ! empty( $args['desc'] ) ? $args['desc'] : '',
-				'callback'    => isset( $args['callback'] ) && ! empty( $args['callback'] ) ? $args['callback'] : '',
-				'tab_title'   => isset( $args['tab_title'] ) && ! empty( $args['tab_title'] ) ? $args['tab_title'] : $args['title'],
-				'fields'      => $fields,
+				'id'         => $key,
+				'capability' => $cap,
+				'title'      => isset( $args['title'] ) && ! empty( $args['title'] ) ? $args['title'] : '',
+				'desc'       => isset( $args['desc'] ) && ! empty( $args['desc'] ) ? $args['desc'] : '',
+				'callback'   => isset( $args['callback'] ) && ! empty( $args['callback'] ) ? $args['callback'] : '',
+				'tab_title'  => isset( $args['tab_title'] ) && ! empty( $args['tab_title'] ) ? $args['tab_title'] : $args['title'],
+				'fields'     => $fields,
 			);
 		}
 

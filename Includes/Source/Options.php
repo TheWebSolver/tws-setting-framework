@@ -157,7 +157,7 @@ final class Options {
 
 			// Set callback function.
 			$callback = function() use ( $section ) {
-				echo esc_html( str_replace( '"', '\"', $section['desc'] ) );
+				echo wp_kses_post( str_replace( '"', '\"', $section['desc'] ) );
 			};
 		} else {
 			$callback = null;
@@ -328,6 +328,7 @@ final class Options {
 			$sanitize_callback = $this->get_sanitize_callback( $key );
 
 			// If callback arg is set in each field, call it.
+			/** @var \callable $sanitize_callback */ // phpcs:ignore
 			if ( $sanitize_callback ) {
 				$pre_saved_values[ $key ] = call_user_func( $sanitize_callback, $value );
 				continue;
