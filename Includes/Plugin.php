@@ -63,16 +63,23 @@ final class Plugin {
 	/**
 	 * Boot plugin.
 	 *
+	 * @param string $plugin_file Main plugin file if using normally.
+	 *                            If used via composer, auto generates it.
+	 *
 	 * @return Plugin
 	 *
 	 * @since 2.0
 	 * @static
 	 */
-	public static function boot(): Plugin {
+	public static function boot( $plugin_file = '' ): Plugin {
 		static $instance;
 		if ( ! is_a( $instance, get_class() ) ) {
+			if ( ! $plugin_file ) {
+				$plugin_file = dirname( __FILE__ );
+			}
+
 			$instance = new self();
-			$instance->define_constants();
+			$instance->define_constants( $plugin_file );
 			$instance->init();
 		}
 		return $instance;
@@ -81,9 +88,11 @@ final class Plugin {
 	/**
 	 * Define plugin constants.
 	 *
+	 * @param string $plugin_file The main plugin file.
+	 *
 	 * @since 2.0
 	 */
-	private function define_constants() {
+	private function define_constants( $plugin_file ) {
 		// Define plugin debug mode. DEBUG: set to true when needed.
 		// TWS Core plugin already defines it.
 		if ( ! defined( 'HZFEX_DEBUG_MODE' ) ) {
@@ -91,9 +100,9 @@ final class Plugin {
 		}
 
 		define( 'HZFEX_SETTING', __( 'The Web Solver Setting Framework', 'tws-setting' ) );
-		define( 'HZFEX_SETTING_URL', plugin_dir_url( HZFEX_SETTING_FILE ) );
-		define( 'HZFEX_SETTING_BASENAME', plugin_basename( HZFEX_SETTING_FILE ) );
-		define( 'HZFEX_SETTING_PATH', plugin_dir_path( HZFEX_SETTING_FILE ) );
+		define( 'HZFEX_SETTING_URL', plugin_dir_url( $plugin_file ) );
+		define( 'HZFEX_SETTING_BASENAME', plugin_basename( $plugin_file ) );
+		define( 'HZFEX_SETTING_PATH', plugin_dir_path( $plugin_file ) );
 		define( 'HZFEX_SETTING_VERSION', $this->version );
 		define( 'HZFEX_SETTING_SCOPE', 'framework' );
 		define( 'HZFEX_SETTING_MENU', 'tws_setting' );

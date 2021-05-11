@@ -47,7 +47,7 @@ if ( ! function_exists( 'tws_setting' ) ) {
 	 * @since 2.0
 	 */
 	function tws_setting(): Plugin {
-		return Plugin::boot();
+		return Plugin::boot( __FILE__ );
 	}
 }
 
