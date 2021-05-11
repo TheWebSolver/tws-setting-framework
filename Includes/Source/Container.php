@@ -321,7 +321,7 @@ class Container {
 		}
 
 		// Registers each child-class page sections and fields.
-		add_action( 'admin_init', array( $this, 'add_page_contents' ), 15 );
+		add_action( 'admin_init', array( $this, 'add_page_contents' ), 99999 );
 	}
 
 	/**
