@@ -36,7 +36,7 @@ if ( ! defined( 'HZFEX_SETTING_FILE' ) ) {
 	define( 'HZFEX_SETTING_FILE', __FILE__ );
 }
 
-require_once __DIR__ . '/Includes/Setting.php';
+require_once __DIR__ . '/Includes/Plugin.php';
 
 if ( ! function_exists( 'tws_setting' ) ) {
 	/**
