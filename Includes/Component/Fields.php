@@ -17,7 +17,7 @@
  * ╚═╝      ╚═╝    ═══════════════╝
  */
 
-namespace TheWebSolver\Core\Setting;
+namespace TheWebSolver\Core\Setting\Component;
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;

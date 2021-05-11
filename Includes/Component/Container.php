@@ -20,7 +20,7 @@
  * ╚═╝      ╚═╝    ═══════════════╝
  */
 
-namespace TheWebSolver\Core\Setting;
+namespace TheWebSolver\Core\Setting\Component;
 
 use WP_Error;
 

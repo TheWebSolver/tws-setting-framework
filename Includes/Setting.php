@@ -115,10 +115,6 @@ final class Plugin {
 	 * @since 2.0
 	 */
 	private function init() {
-		// Require necessary plugin files.
-		require_once __DIR__ . '/Source/Options.php';
-		require_once __DIR__ . '/Source/Container.php';
-
 		// Register this plugin as extension to TWS Core.
 		// Using inside hook so it always fire after core plugin is loaded.
 		add_action( 'hzfex_core_loaded', array( $this, 'register' ) );

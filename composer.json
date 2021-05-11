@@ -1,18 +1,23 @@
 {
-    "name": "thewebsolver/tws-setting-framework",
-    "description": "WordPress Settings (Options) API framework to manage core WordPress Settings API easily.",
-    "type": "wordpress-plugin",
-    "license": "GPL-3.0-or-later",
-    "authors": [
-        {
-            "name": "hsehszroc",
-            "email": "shesh@thewebsolver.com"
-        }
-    ],
-		"autoload": {
-			"psr-4": { "": "Includes/" }
-		},
-    "require": {
-			"php": ">=7.0"
+	"name": "thewebsolver/tws-setting-framework",
+	"description": "WordPress Settings (Options) API framework to manage core WordPress Settings API easily.",
+	"type": "wordpress-plugin",
+	"license": "GPL-3.0-or-later",
+	"authors": [
+		{
+			"name": "hsehszroc",
+			"email": "shesh@thewebsolver.com"
 		}
+	],
+	"autoload": {
+		"psr-4": {
+			"TheWebSolver\\Core\\Setting\\":
+			[
+				"Includes"
+			]
+		}
+	},
+	"require": {
+		"php": ">=7.0"
+	}
 }
