@@ -630,6 +630,20 @@ final class Options {
 					});
 				});
 				$('input:radio:checked').closest('li').addClass('hz_radio_selected');
+
+				// Link: https://wordpress.stackexchange.com/questions/279999/show-password-while-you-are-typing-it-on-the-my-account-login-page.
+				var passwordToggle = $('.hz_reveal_password');
+				$(passwordToggle).hover(
+					function() {
+						var passwordField = $(this).siblings('input');
+						$(passwordField).attr('type', 'text');
+						$(this).removeClass('dashicons-visibility').addClass('dashicons-hidden');
+					},
+					function () {
+						var passwordField = $(this).siblings('input');
+						$(passwordField).attr('type', 'password');
+						$(this).removeClass('dashicons-hidden').addClass('dashicons-visibility');
+					});
 			});
 		</script>
 

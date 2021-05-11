@@ -69,12 +69,12 @@ h1 + small {
 input[type] {
 	height: 50px;
 }
-input[type="text"], textarea {
+input[type="text"], input[type="password"], textarea {
 	border: 2px solid var(--light-gray-bold);
 	transition: border .2s ease-in-out;
 }
-input[type="text"], textarea {
-	border: 2px solid var(--light-gray-bold);
+input[type="password"] {
+	padding-right: 60px;
 }
 input[type="text"]:focus, input[type="password"]:focus, input[type="color"]:focus, input[type="date"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="email"]:focus, input[type="month"]:focus, input[type="number"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="text"]:focus, input[type="time"]:focus, input[type="url"]:focus, input[type="week"]:focus, input[type="checkbox"]:focus, input[type="radio"]:focus, select:focus, textarea:focus {
 	outline: none;
@@ -83,6 +83,18 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="color"]:focu
 }
 .hz_switcher_control input:focus:before {
 	background: var(--primary) ;
+}
+.hz_password_control > td {
+	position: relative;
+}
+.hz_reveal_password {
+	position: absolute;
+	top: 17px;
+	right: 12px;
+	background: var(--light-gray);
+	width: 50px;
+	height: 46px;
+	line-height: 50px;
 }
 .form-table td p.description {
 	font-size: 0.95em;
@@ -581,9 +593,42 @@ select2-selection[aria-expanded="true"] .select2-container--default .select2-sel
 	background-color: var(--primary);
 	color: var(--white);
 }
+.select2-container .select2-selection--single {
+	border: 2px solid var(--light-gray-bold) !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+	line-height: 45px !important;
+}
+.select2-container .select2-selection--single,
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+	height: 50px !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+	background: var(--light-gray-bold);
+	width: 50px !important;
+	top: 0 !important;
+	right: 0 !important;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+	border-width: 8px 8px 0 8px !important;
+	border-top-color: var(--light) !important;
+	margin-left: -8px !important;
+	margin-top: -3px !important;
+}
+.select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
+	border-bottom-color: var(--light) !important;
+	border-width: 0 8px 8px 8px !important;
+}
 
 @media( min-width: 60rem ) {
 	.hz_isometric {
 		display: block;
+	}
+}
+@media( max-width: 782px ) {
+	.hz_reveal_password {
+		top: 6px;
 	}
 }

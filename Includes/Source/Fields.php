@@ -617,7 +617,8 @@ function password_field( $field, $value, $desc ) {
 	 * %3$s is the field ID.
 	 * %4$s is the field value.
 	 */
-	$html  = sprintf( '<input type="password" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s"/>', $size, $field['section'], $field['id'], $value );
+	$html  = sprintf( '<input type="password" class="%1$s" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s"/>', $field['class'], $field['section'], $field['id'], $value );
+	$html .= '<span class="hz_reveal_password dashicons dashicons-visibility"></span>';
 	$html .= $desc;
 
 	echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
