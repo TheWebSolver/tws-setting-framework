@@ -413,7 +413,7 @@ final class Options {
 
 		$html .= '</div></div>';
 
-		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo wp_kses_post( $html );
 		ob_get_contents();
 	}
 
@@ -499,7 +499,7 @@ final class Options {
 		// Quick check if unsupported fields are only set.
 		if ( self::has_input_field( $section['fields'] ) ) {
 			echo '<div class="hz_setting_submit">';
-				echo submit_button(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo wp_kses_post( submit_button() );
 			echo '</div>';
 		}
 
@@ -533,7 +533,7 @@ final class Options {
 	 */
 	public function script() {
 		?>
-		<script>
+		<script id="hzfex_setting_framework_script" type="text/javascript">
 			jQuery(document).ready(function($) {
 
 				//Initiate Color Picker
@@ -612,16 +612,19 @@ final class Options {
 				});
 
 				// enable select2 when necessary for "select" & "multi-select" field type
-				if($('.hz_select_control .hz_select_control').length > 0) {
-					$('.hz_select_control .hz_select_control').select2({
-						width: '100%',
-						placeholder: 'Select Options',
-						allowClear: false,
-						dropdownParent: $('.hz_select_control td'),
-						minimumResultsForSearch: 5,
-						closeOnSelect: true
-					});
-				}
+				const SelectFields = $('body').find('.hz_select_control .hz_select_control');
+				SelectFields.each(function(index, el) {
+					if (el.length > 0) {
+						$(el).select2({
+							width: '100%',
+							placeholder: '<?php echo esc_html__( 'Select Options', 'tws-setting' ); ?>',
+							allowClear: false,
+							dropdownParent: $(el).parent(),
+							minimumResultsForSearch: 5,
+							closeOnSelect: true
+						});
+					}
+				});
 
 				// radio input field selection.
 				$('input[type="radio"]').on('click', function() {
@@ -632,8 +635,8 @@ final class Options {
 				$('input:radio:checked').closest('li').addClass('hz_radio_selected');
 
 				// Link: https://wordpress.stackexchange.com/questions/279999/show-password-while-you-are-typing-it-on-the-my-account-login-page.
-				var passwordToggle = $('.hz_reveal_password');
-				$(passwordToggle).hover(
+				const PasswordToggle = $('.hz_reveal_password');
+				$(PasswordToggle).hover(
 					function() {
 						var passwordField = $(this).siblings('input');
 						$(passwordField).attr('type', 'text');
