@@ -66,12 +66,15 @@ h1 + small {
 }
 
 /* general styling */
-input[type] {
-	height: 50px;
+input:not([type="checkbox"], [type="radio"]), select {
+	min-height: 50px;
 }
-input[type="text"], input[type="password"], textarea {
+
+input:not([type="checkbox"], [type="radio"], [type="button"]), select, textarea {
 	border: 2px solid var(--light-gray-bold);
+	border-radius: 3px;
 	transition: border .2s ease-in-out;
+	width: 100%;
 }
 input[type="password"] {
 	padding-right: 60px;
@@ -84,7 +87,8 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="color"]:focu
 .hz_switcher_control input:focus:before {
 	background: var(--primary) ;
 }
-.hz_password_control > td {
+.hz_password_control > td,
+tr.file td {
 	position: relative;
 }
 .hz_reveal_password {
@@ -95,6 +99,15 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="color"]:focu
 	width: 50px;
 	height: 46px;
 	line-height: 50px;
+}
+.file input.button {
+	position: absolute;
+	right: 12px;
+	top: 18px;
+	border: none;
+	min-height: 45px;
+	border-radius: 0;
+	box-shadow: none;
 }
 .form-table td p.description {
 	font-size: 0.95em;
@@ -548,7 +561,7 @@ tr:not(.hz_card_control) .hz_control_field label input {
 .select2-container .select2-selection {
 	display: flex;
 	align-items: center;
-	height: 50px;
+	min-height: 50px;
 	border: 2px solid var(--light-gray-bold);
 }
 .select2-container .select2-selection[aria-expanded="true"] {
@@ -620,6 +633,15 @@ select2-selection[aria-expanded="true"] .select2-container--default .select2-sel
 .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
 	border-bottom-color: var(--light) !important;
 	border-width: 0 8px 8px 8px !important;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+	min-height: 50px;
+	line-height: 50px;
+	padding-left: 16px;
+	padding-right: 16px;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice > span {
+	margin-right: 8px;
 }
 
 @media( min-width: 60rem ) {
