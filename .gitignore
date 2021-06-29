@@ -1,0 +1,8 @@
+# Ignore example templates folder.
+/templates/
+
+# igonre v1 setting files.
+/setting/
+
+# ignore old api file.
+/Includes/API/
