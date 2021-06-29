@@ -70,7 +70,7 @@ composer require thewebsolver/tws-setting-framework
 	```
 
 ## Examples
-- For exmaple codes, check [EXAMPLE](https://github.com/TheWebSolver/tws-setting-framework/blob/master/EXAMPLE.md) file.
+- For exmaple codes, check [EXAMPLE](https://github.com/TheWebSolver/tws-license-manager-server/blob/master/EXAMPLE.md) file.
 
 ## Screenshots
 
